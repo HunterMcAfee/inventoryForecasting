@@ -1,3 +1,7 @@
+*{
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
 body {
   margin: 0;
   padding: 0;
@@ -9,6 +13,34 @@ h1{
   text-align: center;
 }
 
+h2{
+	position: relative;
+	text-align: left;
+}
+
 #type{
   font-weight: bold;
+}
+
+.typeStore, .factorDrop, .dropWeek{
+	width: 100%;
+}
+
+.pastInfo, .forecastInfo{
+	border: solid 5px black;
+	border-radius: 5px;
+	margin-left: 2.5%;
+	margin-right: 2.5%;
+	overflow-x: scroll;
+	white-space: nowrap;
+}
+
+.weekCard{
+	border: solid 2px black;
+	border-radius: 5px;
+	box-shadow: 5px 10px;
+	margin-left: 1%;
+	margin-top: 1%;
+	padding: 3%;
+	display: inline-block;
 }

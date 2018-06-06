@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import PastInfo from './PastInfo'
+import ForecastInfo from './ForecastInfo'
 
 const Weekdropdown = ()=>{
     let weeks = [];
@@ -27,21 +29,25 @@ export default class Forecast extends Component {
         
     }
 
+    handleSubmit(event){
+        event.preventDefault();
+    }
+
     render() {
         return (
             <div>
                 <h1>Forecast</h1>
                 <br />
-                <form className="searchBox row">
+                <form className="searchBox row" onSubmit={this.handleSubmit}>
                     <div className="col1 col-sm-12 col-lg-2 col-lg-offset-1">
-                        <input type="text" placeholder="Store Number" id="str" />
+                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Store Number" id="str" />
                         <br />
-                        <input type="text" placeholder="SKU" id="sku" />
+                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="SKU" id="sku" />
                     </div>
                     <div className="col2 col-sm-12 col-lg-2 ">
                         {/*Store Type*/}
                         <div className="dropdown"> 
-                            <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <button className="btn btn-default dropdown-toggle typeStore" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 Store Type
                             <span className="caret"></span>
                             </button>
@@ -54,9 +60,10 @@ export default class Forecast extends Component {
                                <li>F</li>
                             </ul>
                         </div>
+                        <br/>
                         {/*Factors*/}
                         <div className="dropdown"> 
-                            <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <button className="btn btn-default dropdown-toggle factorDrop" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 Factors &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <span className="caret"></span>
                             </button>
@@ -73,7 +80,7 @@ export default class Forecast extends Component {
                     {/*Week Start Date*/}
                     <div className="col3 col-sm-12 col-lg-2">
                         <div className="dropdown">
-                            <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <button className="btn btn-default dropdown-toggle dropWeek" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 Week start
                             <span className="caret"></span>
                             </button>
@@ -81,12 +88,13 @@ export default class Forecast extends Component {
                                 <Weekdropdown />
                             </ul>
                         </div>
-                        <input type="text" placeholder="year" id="yearStart" /> 
+                        <br/>
+                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearStart" /> 
                     </div>
                     {/*Week End Date */}
                     <div className="col3 col-sm-12 col-lg-2">
                         <div className="dropdown">
-                            <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                            <button className="btn btn-default dropdown-toggle dropWeek" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 Week End
                             <span className="caret"></span>
                             </button>
@@ -94,12 +102,18 @@ export default class Forecast extends Component {
                                 <Weekdropdown />
                             </ul>
                         </div>
-                        <input type="text" placeholder="year" id="yearEnd" /> 
+                        <br/>
+                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearEnd" /> 
                     </div>
+                    <br/>
                     <div className = "col4 col-sm-12 col-lg-2 ">
                         <button className="btn btn-primary" type="submit"> Submit </button>
                     </div>
                 </form>
+                <h2>Past Sales: </h2>
+                <PastInfo />
+                <h2>Forecast: </h2>
+                <ForecastInfo />
             </div>
         )
     }

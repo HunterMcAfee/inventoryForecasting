@@ -12,9 +12,11 @@ class App extends Component {
       <Router>
       	<div>
         	<Route path="/" component={Navbar} />
-        	<Route exact path="/DataEntry" component={DataEntry} />
-          <Route exact path = "/forecast" component={Forecast} />
-      	</div>
+        	<div className="container">
+            <Route exact path="/DataEntry" component={DataEntry} />
+            <Route exact path = "/forecast" component={Forecast} />
+      	  </div>
+        </div>
       </Router>
     );
   }
