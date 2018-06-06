@@ -1,5 +1,13 @@
 import React, { Component } from 'react'
 
+const Weekdropdown = ()=>{
+    let weeks = [];
+    for (let i = 1; i < 53; i++ ){
+        weeks.push(<li>{i}</li>)   
+    }
+    return weeks;      
+}
+
 export default class Forecast extends Component {
 
     constructor(){
@@ -9,12 +17,14 @@ export default class Forecast extends Component {
         })
     }
 
-    factorDropDown(event){
-        // make query call for all str
-        //throw them into stores []
-        return(
-            <h1>Stuff</h1>
-        )
+    componentDidMount(){
+        // make axios call to our backend for all str incase new factors have been added
+    
+        this.setState({
+            // factors: 
+            factors: ['Rain', 'Snow']
+        })
+        
     }
 
     render() {
@@ -29,21 +39,38 @@ export default class Forecast extends Component {
                         <input type="text" placeholder="SKU" id="sku" />
                     </div>
                     <div className="col2 col-sm-12 col-lg-2 ">
-                        <div className="dropdown">
-                            <span id="type">Type &nbsp;</span> 
+                        {/*Store Type*/}
+                        <div className="dropdown"> 
                             <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                Factors
+                                Store Type
                             <span className="caret"></span>
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li>Action</li>
-                                <li>Another action</li>
+                               <li>A</li>
+                               <li>B</li>
+                               <li>C</li>
+                               <li>D</li>
+                               <li>E</li>
+                               <li>F</li>
                             </ul>
                         </div>
-                        <div>
-                            <button className="btn btn-primary" type = "button" id="addFactor">Add Factor</button>
+                        {/*Factors*/}
+                        <div className="dropdown"> 
+                            <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Factors &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span className="caret"></span>
+                            </button>
+                            <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                {/* List all factors in our current factor arr in state */}
+                                {this.state.factors.map((factor, i) => {
+                                    return (
+                                        <li key={i}>{factor}</li>
+                                    )
+                                })}
+                            </ul>
                         </div>
                     </div>
+                    {/*Week Start Date*/}
                     <div className="col3 col-sm-12 col-lg-2">
                         <div className="dropdown">
                             <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -51,12 +78,12 @@ export default class Forecast extends Component {
                             <span className="caret"></span>
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li>1</li>
-                                <li>2</li>
+                                <Weekdropdown />
                             </ul>
                         </div>
                         <input type="text" placeholder="year" id="yearStart" /> 
                     </div>
+                    {/*Week End Date */}
                     <div className="col3 col-sm-12 col-lg-2">
                         <div className="dropdown">
                             <button className="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -64,8 +91,7 @@ export default class Forecast extends Component {
                             <span className="caret"></span>
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                <li>1</li>
-                                <li>2</li>
+                                <Weekdropdown />
                             </ul>
                         </div>
                         <input type="text" placeholder="year" id="yearEnd" /> 
