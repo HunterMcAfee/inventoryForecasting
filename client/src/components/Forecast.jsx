@@ -64,15 +64,16 @@ export default class Forecast extends Component {
             yearEnd: yearEnd,
 
         }
-        // console.log(searchParams);
 
-        // axios.post('http://localhost:8080/forecastSearch', searchParams)
-        //     .then((res) => {
+        console.log(searchParams);
 
-        //     })
-        //     .catch((error) => {
-        //         console.log(error);
-        //     })
+        axios.post('http://localhost:8080/past', searchParams)
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
     }
 
     changeTypeText(letter){
