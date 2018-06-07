@@ -33,20 +33,37 @@ export default class Forecast extends Component {
 
         let str = document.getElementById('str').value;
         let sku = document.getElementById('sku').value;
-        let factor = this.state.factorTxt;
-        let type = this.state.strType;
-        let weekStart = this.state.weekStr;
-        let weekEnd = this.state.weekEd;
         let yearStart = document.getElementById('yearStart').value;
         let yearEnd = document.getElementById('yearEnd').value;
-        console.log(str);
-        console.log(sku);
-        console.log(factor);
-        console.log(type);
-        console.log(weekStart);
-        console.log(weekEnd);
-        console.log(yearStart);
-        console.log(yearEnd);
+        let factor = this.state.factorTxt;
+        if(factor === "Factor"){
+            factor = ""
+        }
+        let type = this.state.strType;
+        if(type === "Store Type"){
+            type = ""
+        }
+        let weekStart = this.state.weekStr;
+        if(weekStart === "Week Start"){
+            weekStart = ""
+        }
+        let weekEnd = this.state.weekEd;
+        if(weekEnd === "Week End"){
+            weekEnd = ""
+        }
+        
+        let searchParams = {
+            str: str,
+            sku: sku,
+            type: type,
+            factor: factor,
+            weekStart: weekStart,
+            yearStart: yearStart,
+            weekEnd: weekEnd,
+            yearEnd: yearEnd,
+
+        }
+        console.log(searchParams);
     }
 
     changeTypeText(letter){
