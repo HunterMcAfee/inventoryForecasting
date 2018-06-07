@@ -3,6 +3,7 @@ import PastInfo from './PastInfo'
 import ForecastInfo from './ForecastInfo'
 import WeekdropdownStr from './WeekdropdownStr'
 import WeekdropdownEnd from './WeekdropdownEnd'
+import axios from 'axios';
 
 export default class Forecast extends Component {
 
@@ -63,7 +64,15 @@ export default class Forecast extends Component {
             yearEnd: yearEnd,
 
         }
-        console.log(searchParams);
+        // console.log(searchParams);
+
+        // axios.post('http://localhost:8080/forecastSearch', searchParams)
+        //     .then((res) => {
+
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     })
     }
 
     changeTypeText(letter){
