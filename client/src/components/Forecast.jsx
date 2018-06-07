@@ -15,7 +15,8 @@ export default class Forecast extends Component {
             factorTxt: "Factor",
             weekStr: "Week Start",
             weekEd: "Week End",
-            pastInfo: []
+            pastInfo: [],
+            futureInfo: [],
         })
         this.changeFactorText = this.changeFactorText.bind(this);
     }
@@ -36,7 +37,13 @@ export default class Forecast extends Component {
         let str = document.getElementById('str').value;
         let sku = document.getElementById('sku').value;
         let yearStart = document.getElementById('yearStart').value;
+        if(yearStart === ""){
+            yearStart = 0
+        }
         let yearEnd = document.getElementById('yearEnd').value;
+        if(yearEnd === ""){
+            yearEnd = 0
+        }
         let factor = this.state.factorTxt;
         if(factor === "Factor"){
             factor = ""
@@ -47,11 +54,11 @@ export default class Forecast extends Component {
         }
         let weekStart = this.state.weekStr;
         if(weekStart === "Week Start"){
-            weekStart = ""
+            weekStart = 0
         }
         let weekEnd = this.state.weekEd;
         if(weekEnd === "Week End"){
-            weekEnd = ""
+            weekEnd = 0
         }
         
         let searchParams = {
