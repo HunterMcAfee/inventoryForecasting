@@ -1,36 +1,21 @@
 import React, { Component } from 'react'
 
 export default class PastInfo extends Component {
+	constructor(props) {
+		super(props);
+	}
 
 	loadPastInfo = () => {
 	
 		// axios call for pass info
-		let weeklySales = [	
-			{
-			week: 12,
-			year: 2017,
-			factor: "Snow",
-			sku: "AA123BAB",
-			sku_description: "Hammer",
-			qty: 85,
-			},
-			{
-			week: 12,
-			year: 2017,
-			factor: "Snow",
-			sku: "AA123BAB",
-			sku_description: "Hammer",
-			qty: 85,
-			},
-
-		]
+		let weeklySales = this.props.pastInfo;
 
 		let weeklyBox = weeklySales.map((item, i)=>{
 			return (<div className="weekCard" key={i}>
 						Week: {item.week} ,Year: {item.year}<br/>
-						Factor: {item.factor} ,SKU: {item.sku} <br />
-						Item Description: {item.sku_description} <br />
-						Quantity: {item.qty}
+						Factor: {item.factor} ,SKU: {item.sku_id} <br />
+						Item Description: {item.description} <br />
+						Quantity: {item.quantity}
 					</div>)
 		})
 

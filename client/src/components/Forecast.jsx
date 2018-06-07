@@ -15,6 +15,7 @@ export default class Forecast extends Component {
             factorTxt: "Factor",
             weekStr: "Week Start",
             weekEd: "Week End",
+            pastInfo: []
         })
         this.changeFactorText = this.changeFactorText.bind(this);
     }
@@ -70,6 +71,9 @@ export default class Forecast extends Component {
         axios.post('http://localhost:8080/past', searchParams)
             .then((res) => {
                 console.log(res);
+                this.setState({
+                    pastInfo: res.data
+                })
             })
             .catch((error) => {
                 console.log(error);
@@ -181,7 +185,7 @@ export default class Forecast extends Component {
                     </div>
                 </form>
                 <h2>Past Sales: </h2>
-                <PastInfo />
+                <PastInfo pastInfo={this.state.pastInfo} />
                 <h2>Forecast: </h2>
                 <ForecastInfo />
             </div>
