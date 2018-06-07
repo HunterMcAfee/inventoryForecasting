@@ -35,6 +35,12 @@ h2{
 	white-space: nowrap;
 }
 
+.dropdown-menu{
+	height: 400%;
+	overflow-y: scroll;
+
+}
+
 .weekCard{
 	border: solid 2px black;
 	border-radius: 5px;

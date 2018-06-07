@@ -32,11 +32,10 @@ export default class ForecastInfo extends Component {
 						Qauntity: {item.qty}
 					</div>)
 		})
-
 		return weeklyBox;
 	}
 
-	render() {
+	render(){
 		return (
 			<div className="forecastInfo row">
 				{this.loadPastInfo()}
