@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import DataEntry from './components/DataEntry';
@@ -12,9 +11,11 @@ class App extends Component {
       <Router>
       	<div>
         	<Route path="/" component={Navbar} />
-        	<Route exact path="/DataEntry" component={DataEntry} />
-          <Route exact path = "/forecast" component={Forecast} />
-      	</div>
+        	<div className="container">
+            <Route exact path="/DataEntry" component={DataEntry} />
+            <Route exact path = "/forecast" component={Forecast} />
+      	  </div>
+        </div>
       </Router>
     );
   }
