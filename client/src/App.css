@@ -22,6 +22,55 @@
   font-size: large;
 }
 
+.store {
+/*  margin-right: -10px;
+*/
+  width: 100%;
+/*  border-color: orange;
+*/}
+
+.factor {
+  width: 100% !important;
+/*  border-color: orange;
+*/
+}
+
+.week {
+/*  margin-left: -40px;
+*/
+width: 100% !important;
+/*border-color: orange;
+*/}
+
+.year {
+  width: 100%;
+  /*text-align: center;
+  margin-left: -30px;*/
+/*  border-color: orange;
+*/}
+
+.buttonEntry {
+  width: 16% !important;
+}
+
+.submitEntry {
+  width: 15% !important;
+  margin-left: 15px;
+}
+
+.newEntryList {
+  background-color: lightgrey;
+  height: 220px;
+  width: 60%;
+/*  overflow: auto;
+*/
+  overflow-y: auto;
+  overflow-x: hidden; 
+  margin-left: auto;
+  margin-right: auto; 
+}
+
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
