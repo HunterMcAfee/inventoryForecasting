@@ -1,35 +1,21 @@
 import React, { Component } from 'react'
 
 export default class ForecastInfo extends Component {
+	constructor(props) {
+		super(props);
+	}
 
-	loadPastInfo = () => {
-	
+	loadForecastInfo = () => {
 		// axios call for pass info
-		let weeklySales = [{
-			week: 12,
-			year: 2017,
-			factor: "Snow",
-			sku: "AA123BAB",
-			sku_description: "Hammer",
-			qty: 85,
-		},
-			{
-			week: 12,
-			year: 2017,
-			factor: "Snow",
-			sku: "AA123BAB",
-			sku_description: "Hammer",
-			qty: 85,
-			},
-
-		]
+		let weeklySales = this.props.forecastInfo
 
 		let weeklyBox = weeklySales.map((item, i)=>{
 			return (<div className="weekCard" key={i}>
-						Week: {item.week} ,Year: {item.year}<br/>
-						Factor: {item.factor} ,SKU: {item.sku} <br />
-						Item Description: {item.sku_description} <br />
-						Qauntity: {item.qty}
+						Week: {item.week}, Year: {item.year}<br/>
+						Factor: {item.factor} <br />
+						SKU: {item.sku_id} <br />
+						Description: {item.description} <br />
+						Quantity: {item.quantity}
 					</div>)
 		})
 		return weeklyBox;
@@ -38,7 +24,7 @@ export default class ForecastInfo extends Component {
 	render(){
 		return (
 			<div className="forecastInfo row">
-				{this.loadPastInfo()}
+				{this.loadForecastInfo()}
 			</div>
 		)
 	}
