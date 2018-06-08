@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import PastInfo from './PastInfo'
-import ForecastInfo from './ForecastInfo'
+import SearchInfo from './SearchInfo.jsx'
 import WeekdropdownStr from './WeekdropdownStr'
 import WeekdropdownEnd from './WeekdropdownEnd'
 import axios from 'axios';
@@ -72,7 +71,7 @@ export default class Forecast extends Component {
         }
         let yearEnd = document.getElementById('yearEnd').value;
         if(yearEnd === ""){
-            yearEnd = 0
+            yearEnd = yearStart
         }
         let factor = this.state.factorTxt;
         if (factor === "Factor") {
@@ -88,7 +87,7 @@ export default class Forecast extends Component {
         }
         let weekEnd = this.state.weekEd;
         if(weekEnd === "Week End"){
-            weekEnd = 0
+            weekEnd = weekStart
         }
 
         let searchParams = {
@@ -221,10 +220,12 @@ export default class Forecast extends Component {
                         <button className="btn btn-primary" type="submit"> Submit </button>
                     </div>
                 </form>
-                <h2>Past Sales: </h2>
-                <PastInfo pastInfo={this.state.pastInfo} />
                 <h2>Forecast: </h2>
-                <ForecastInfo forecastInfo={this.state.forecastInfo} />
+                <SearchInfo searchInfo={this.state.forecastInfo} />
+                <h2>Past Sales: </h2>
+                <SearchInfo searchInfo={this.state.pastInfo} />
+                <br/>
+                <br/>
             </div>
         )
     }

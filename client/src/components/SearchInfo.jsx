@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 
-export default class ForecastInfo extends Component {
+export default class SearchInfo extends Component {
 	constructor(props) {
 		super(props);
 	}
 
-	loadForecastInfo = () => {
-		// axios call for pass info
-		let weeklySales = this.props.forecastInfo
+	loadPastInfo = () => {
+	
+		let weeklySales = this.props.searchInfo;
 
 		let weeklyBox = weeklySales.map((item, i)=>{
 			return (<tr key={i}>
-					      <th scope="row">{i}</th>
+					      <th scope="row">{i + 1}</th>
 					      <td>{item.week}</td>
 					      <td>{item.year}</td>
 					      <td>{item.factor}</td>
@@ -20,14 +20,15 @@ export default class ForecastInfo extends Component {
 					      <td>{item.quantity}</td>
 			    	</tr>)
 		})
+
 		return weeklyBox;
 	}
 
-	render(){
+	render() {
 		return (
-			<div className="forecastInfo">
+			<div className="searchInfo">
 				<table className="table">
-					<thead>
+					<thead className="thead-dark">
 						<tr>
 							<th scope="col">#</th>
 							<th scope="col">Week</th>
@@ -39,7 +40,7 @@ export default class ForecastInfo extends Component {
 						</tr>
 					</thead>
 					<tbody>
-						{this.loadForecastInfo()}
+						{this.loadPastInfo()}
 					</tbody>
 				</table>
 			</div>

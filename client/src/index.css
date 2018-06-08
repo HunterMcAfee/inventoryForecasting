@@ -26,13 +26,20 @@ h2{
 	width: 100%;
 }
 
-.pastInfo, .forecastInfo{
-	border: solid 5px black;
-	border-radius: 5px;
+.searchInfo {
+	border: solid 2px rgb(35,35,35);
+	border-radius: 2px;
 	margin-left: 2.5%;
 	margin-right: 2.5%;
-	overflow-x: scroll;
-	white-space: nowrap;
+	overflow-y: scroll;
+	height: 35vh;
+	/*overflow-x: scroll;*/
+	/*white-space: nowrap;*/
+}
+
+.thead-dark{
+	background-color: rgb(35,35,35);
+	color: rgb(229,229,229);
 }
 
 .dropdown-menu{
