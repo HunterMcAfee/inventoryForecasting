@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export default class Forecast extends Component {
 
-    constructor(){
+    constructor() {
         super();
         this.state = ({
             factors: [],
@@ -15,23 +15,53 @@ export default class Forecast extends Component {
             factorTxt: "Factor",
             weekStr: "Week Start",
             weekEd: "Week End",
-            pastInfo: [],
-            futureInfo: [],
+            pastInfo: [{
+                week: 1,
+                year: 2018,
+                factor: "XXXXX",
+                sku_id: "XXXXXXXX",
+                description: "XXXXX",
+                quantity: 1,
+            },
+            {
+                week: 1,
+                year: 2018,
+                factor: "XXXXX",
+                sku_id: "XXXXXXXX",
+                description: "XXXXX",
+                quantity: 1,
+            }],
+            forecastInfo: [{
+                week: 1,
+                year: 2018,
+                factor: "XXXXX",
+                sku_id: "XXXXXXXX",
+                description: "XXXXX",
+                quantity: 1,
+            },
+            {
+                week: 1,
+                year: 2018,
+                factor: "XXXXX",
+                sku_id: "XXXXXXXX",
+                description: "XXXXX",
+                quantity: 1,
+            }]
         })
         this.changeFactorText = this.changeFactorText.bind(this);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         // make axios call to our backend for all str incase new factors have been added
-    
+
         this.setState({
             // factors: 
             factors: ['Rain', 'Snow']
         })
-        
+
     }
 
-    handleSubmit = (event) =>{
+    handleSubmit = (event) => {
         event.preventDefault();
 
         let str = document.getElementById('str').value;
@@ -45,11 +75,11 @@ export default class Forecast extends Component {
             yearEnd = 0
         }
         let factor = this.state.factorTxt;
-        if(factor === "Factor"){
+        if (factor === "Factor") {
             factor = ""
         }
         let type = this.state.strType;
-        if(type === "Store Type"){
+        if (type === "Store Type") {
             type = ""
         }
         let weekStart = this.state.weekStr;
@@ -60,7 +90,7 @@ export default class Forecast extends Component {
         if(weekEnd === "Week End"){
             weekEnd = 0
         }
-        
+
         let searchParams = {
             str: str,
             sku: sku,
@@ -87,27 +117,27 @@ export default class Forecast extends Component {
             })
     }
 
-    changeTypeText(letter){
+    changeTypeText(letter) {
         this.setState({
             strType: letter
         })
     }
 
-    changeFactorText(event){
-        let fct = event.target.innerHTML;   
+    changeFactorText(event) {
+        let fct = event.target.innerHTML;
         this.setState({
             factorTxt: fct
         })
     }
 
-    changeWeekStart = (event)=>{
+    changeWeekStart = (event) => {
         let str = event.target.innerHTML;
         this.setState({
             weekStr: str
         })
     }
 
-    changeWeekEnd = (event) =>{
+    changeWeekEnd = (event) => {
         let ed = event.target.innerHTML;
         this.setState({
             weekEd: ed
@@ -127,23 +157,23 @@ export default class Forecast extends Component {
                     </div>
                     <div className="col2 col-sm-12 col-lg-2 ">
                         {/*Store Type*/}
-                        <div className="dropdown"> 
+                        <div className="dropdown">
                             <button className="btn btn-default dropdown-toggle typeStore" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {this.state.strType}
-                            <span className="caret"></span>
+                                {`${this.state.strType} `}
+                                <span className="caret"></span>
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenu">
-                               <li className="pointer" onClick={() => {this.changeTypeText('A')}}>A</li>
-                               <li className="pointer" onClick={() => {this.changeTypeText('B')}}>B</li>
-                               <li className="pointer" onClick={() => {this.changeTypeText('C')}}>C</li>
-                               <li className="pointer" onClick={() => {this.changeTypeText('D')}}>D</li>
-                               <li className="pointer" onClick={() => {this.changeTypeText('E')}}>E</li>
-                               <li className="pointer" onClick={() => {this.changeTypeText('F')}}>F</li>
+                                <li className="pointer" onClick={() => { this.changeTypeText('A') }}>A</li>
+                                <li className="pointer" onClick={() => { this.changeTypeText('B') }}>B</li>
+                                <li className="pointer" onClick={() => { this.changeTypeText('C') }}>C</li>
+                                <li className="pointer" onClick={() => { this.changeTypeText('D') }}>D</li>
+                                <li className="pointer" onClick={() => { this.changeTypeText('E') }}>E</li>
+                                <li className="pointer" onClick={() => { this.changeTypeText('F') }}>F</li>
                             </ul>
                         </div>
-                        <br/>
+                        <br />
                         {/*Factors*/}
-                        <div className="dropdown"> 
+                        <div className="dropdown">
                             <button className="btn btn-default dropdown-toggle factorDrop" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 {this.state.factorTxt} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <span className="caret"></span>
@@ -152,7 +182,7 @@ export default class Forecast extends Component {
                                 {/* List all factors in our current factor arr in state */}
                                 {this.state.factors.map((factor, i) => {
                                     return (
-                                        <li className="pointer" value={factor} onClick={(event) => {this.changeFactorText(event)}} key={i}>{factor}</li>
+                                        <li className="pointer" value={factor} onClick={(event) => { this.changeFactorText(event) }} key={i}>{factor}</li>
                                     )
                                 })}
                             </ul>
@@ -163,38 +193,38 @@ export default class Forecast extends Component {
                         <div className="dropdown">
                             <button className="btn btn-default dropdown-toggle dropWeek" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 {this.state.weekStr}
-                            <span className="caret"></span>
+                                <span className="caret"></span>
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenu3">
                                 <WeekdropdownStr changeWeekStart={this.changeWeekStart} />
                             </ul>
                         </div>
-                        <br/>
-                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearStart" /> 
+                        <br />
+                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearStart" />
                     </div>
                     {/*Week End Date */}
                     <div className="col3 col-sm-12 col-lg-2">
                         <div className="dropdown">
                             <button className="btn btn-default dropdown-toggle dropWeek" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 {this.state.weekEd}
-                            <span className="caret"></span>
+                                <span className="caret"></span>
                             </button>
                             <ul className="dropdown-menu" aria-labelledby="dropdownMenu4">
                                 <WeekdropdownEnd changeWeekEnd={this.changeWeekEnd} />
                             </ul>
                         </div>
-                        <br/>
-                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearEnd" /> 
+                        <br />
+                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearEnd" />
                     </div>
-                    <br/>
-                    <div className = "col4 col-sm-12 col-lg-2 ">
+                    <br />
+                    <div className="col4 col-sm-12 col-lg-2 ">
                         <button className="btn btn-primary" type="submit"> Submit </button>
                     </div>
                 </form>
                 <h2>Past Sales: </h2>
                 <PastInfo pastInfo={this.state.pastInfo} />
                 <h2>Forecast: </h2>
-                <ForecastInfo />
+                <ForecastInfo forecastInfo={this.state.forecastInfo} />
             </div>
         )
     }

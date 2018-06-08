@@ -12,9 +12,10 @@ export default class PastInfo extends Component {
 
 		let weeklyBox = weeklySales.map((item, i)=>{
 			return (<div className="weekCard" key={i}>
-						Week: {item.week} ,Year: {item.year}<br/>
-						Factor: {item.factor} ,SKU: {item.sku_id} <br />
-						Item Description: {item.description} <br />
+						Week: {item.week}, Year: {item.year}<br/>
+						Factor: {item.factor} <br />
+						SKU: {item.sku_id} <br />
+						Description: {item.description} <br />
 						Quantity: {item.quantity}
 					</div>)
 		})
