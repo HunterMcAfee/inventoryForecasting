@@ -228,11 +228,14 @@ export default class DataEntry extends Component {
     }
     // 
     let skuDataList = [];
+    let soldQuantity = [];
     for(let i=0; i<this.state.holdValueEntryList.length; i++){
       for(let j=0; j<3; j++){
         if(j !== 1){
           if(this.state.holdValueEntryList[i][j].length === 8 || (j > 0 && this.state.holdValueEntryList[i][j] !=="")){
             let tempEntryErr = this.state.entryErr;
+            skuDataList.push(this.state.holdValueEntryList[i][0]);
+            soldQuantity.push(parseInt(this.state.holdValueEntryList[i][2],10))
             tempEntryErr[i][j] = borderSuccess
             this.setState({entryErr: tempEntryErr});
           } else {
@@ -251,13 +254,15 @@ export default class DataEntry extends Component {
       return;
     }
 
-    const obj = {
-      strNumber: parseInt(this.state.storeNum, 10),
-      factor: factorId,
+      // dataArray: this.state.holdValueEntryList
+      const obj = {
+      storeId: parseInt(this.state.storeNum, 10),
+      factorId: factorId,
       week: parseInt(splitedWeek[1], 10),
       year: intYear,
-      dataArray: this.state.holdValueEntryList
-    }
+      skuNum: skuDataList,
+      soldQuantuty: soldQuantity
+      }
 
     axios.post("http://localhost:8080/dataEntry", obj)
     .then((res) => {
