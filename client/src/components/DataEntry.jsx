@@ -27,10 +27,13 @@ export default class DataEntry extends Component {
       week: "",
       year: "",
       entryErr: [[borderNorm, borderNorm, borderNorm]],
+      strErr: borderNorm,
       factorErr: borderNorm,
       weekErr: borderNorm,
       yearErr: borderNorm,
-      skuData: {}
+      skuData: [],
+      factorOption: [],
+      strNumberData: []
     }
 
     this.addNewEntry = this.addNewEntry.bind(this);
@@ -38,33 +41,48 @@ export default class DataEntry extends Component {
 
   componentDidMount(){
 
-    // axios.post("http://localhost:8080/strNumData", obj)
-    // .then((res) => {
-    //   console.log(res.data);
-    //   // this.setState({
-    //   //     pastInfo: res.data
-    //   // })
-    // })
-    // .catch(function(error){
-    //   if(!error.error){
-    //   } else {
-    //     const code = error.response.status
-    //     const response = error.reponse.data
-    //     }
-    // });
-    this.setState({
-      skuData: {
-        '11111111': 'hammer',
-        '22222222': "wood",
-        '33333333': 'saws',
-        '44444444': 'bucket',
-        '55555555': 'nails',
-        '66666666': 'screws',
-        '77777777': 'shovel',
-        '88888888': 'rake',
-        '99999999': 'lawn mower'
-      }
+    axios.post("http://localhost:8080/factorData")
+    .then((res) => {
+      this.setState({
+          factorOption: res.data
+      })
     })
+    .catch(function(error){
+      if(!error.error);
+    });
+
+    axios.post("http://localhost:8080/skuMasterData")
+    .then((res) => {
+      this.setState({
+          skuData: res.data
+      })
+    })
+    .catch(function(error){
+      if(!error.error);
+    });
+
+    axios.post("http://localhost:8080/strMasterData")
+    .then((res) => {
+      this.setState({
+          strNumberData: res.data
+      })
+    })
+    .catch(function(error){
+      if(!error.error);
+    });
+    // this.setState({
+    //   skuData: {
+    //     '11111111': 'hammer',
+    //     '22222222': "wood",
+    //     '33333333': 'saws',
+    //     '44444444': 'bucket',
+    //     '55555555': 'nails',
+    //     '66666666': 'screws',
+    //     '77777777': 'shovel',
+    //     '88888888': 'rake',
+    //     '99999999': 'lawn mower'
+    //   }
+    // })
   }
 
   addNewEntry(event) {
@@ -89,9 +107,30 @@ export default class DataEntry extends Component {
     let tempEntryErr = this.state.entryErr;
 
     tempHoldEntryList[element][column] = event.target.value;
-    if(event.target.value in this.state.skuData && column === 0){
-      tempEntryErr[element][column] = borderSuccess;
-      tempHoldEntryList[element][1] = this.state.skuData[event.target.value];
+    // if(event.target.value in this.state.skuData && column === 0){
+    //   tempEntryErr[element][column] = borderSuccess;
+    //   tempHoldEntryList[element][1] = this.state.skuData[event.target.value];
+    // }
+
+    // CC891CBC
+    if(column === 0 && event.target.value.length === 8){
+      let foundAMatch = false;
+      for(let i=0; i < this.state.skuData.length; i++){
+        if(event.target.value === this.state.skuData[i].sku_id){
+          foundAMatch = true;
+          tempEntryErr[element][column] = borderSuccess;
+          tempHoldEntryList[element][1] = this.state.skuData[i].sku_description;
+          break;
+        }
+      }
+      if(!foundAMatch){
+         tempEntryErr[element][column] = borderError;
+         tempHoldEntryList[element][1] = "";
+      }
+    } else if(column === 0 && event.target.length !== 8){ 
+      tempEntryErr[element][column] = borderError;
+      tempHoldEntryList[element][1] = "";
+      
     }
 
     this.setState({
@@ -140,18 +179,10 @@ export default class DataEntry extends Component {
 
     // Convert Factor to Factor Id
     let factorId = -1;
-    switch(this.state.factor){
-      case "Normal Day": factorId = 0; break;
-      case "Rain": factorId = 1; break;
-      case "Hurricane": factorId = 2; break;
-      case "Snow": factorId = 3; break;
-      case "Zombie Apocalypse": factorId = 4; break;
-      case "Father's day": factorId = 5; break;
-      case "Fourth of July": factorId = 6; break;
-      case "Mother's day": factorId = 7; break;
-      case "Memorial day": factorId = 8; break;
-      case "Black Friday": factorId = 9; break;
-      default: factorId = -1
+    for(let i=0; i < this.state.factorOption.length; i++){
+      if(this.state.factorOption[i].f_description === this.state.factor){
+        factorId = this.state.factorOption[i].f_id;
+      }
     }
 
     if(factorId === -1){
@@ -181,20 +212,36 @@ export default class DataEntry extends Component {
       anyErrors = true;
     }
 
+    // Check Str Number
+    let foundStrMatch = false;
+    for(let i = 0; i < this.state.strNumberData.length; i++){
+      // console.log(this.state.strNumberData[i].str_id)
+      if(parseInt(this.state.storeNum,10) === this.state.strNumberData[i].str_id){
+        foundStrMatch = true;
+        this.setState({strErr: borderSuccess})
+        break;
+      }
+    } 
+    if(!foundStrMatch){
+      this.setState({strErr: borderError})
+      anyErrors = true;
+    }
     // 
+    let skuDataList = [];
     for(let i=0; i<this.state.holdValueEntryList.length; i++){
       for(let j=0; j<3; j++){
-
-        if(this.state.holdValueEntryList[i][j].length === 8 || (j > 0 && this.state.holdValueEntryList[i][j] !=="")){
-          let tempEntryErr = this.state.entryErr;
-          tempEntryErr[i][j] = borderSuccess
-          this.setState({entryErr: tempEntryErr});
-        } else {
-          anyErrors = true;
-          let tempEntryErr = this.state.entryErr;
-          tempEntryErr[i][j] = borderError
-          this.setState({entryErr: tempEntryErr});
-        } 
+        if(j !== 1){
+          if(this.state.holdValueEntryList[i][j].length === 8 || (j > 0 && this.state.holdValueEntryList[i][j] !=="")){
+            let tempEntryErr = this.state.entryErr;
+            tempEntryErr[i][j] = borderSuccess
+            this.setState({entryErr: tempEntryErr});
+          } else {
+            anyErrors = true;
+            let tempEntryErr = this.state.entryErr;
+            tempEntryErr[i][j] = borderError
+            this.setState({entryErr: tempEntryErr});
+          } 
+        }
       } 
     }    
 
@@ -214,19 +261,13 @@ export default class DataEntry extends Component {
 
     axios.post("http://localhost:8080/dataEntry", obj)
     .then((res) => {
-      console.log(res.data);
+      // console.log(res.data);
       // this.setState({
       //     pastInfo: res.data
       // })
     })
     .catch(function(error){
-      if(!error.error){
-      } else {
-        const code = error.response.status
-        const response = error.reponse.data
-        console.log(code);
-        console.log(response);
-        }
+      if(!error.error);
     });
   }
 
@@ -268,12 +309,14 @@ export default class DataEntry extends Component {
    			  <div className="row">
              <TopOptions 
               storeNum={this.state.storeNum}
+              strErr={this.state.strErr}
               factor={this.state.factor}
               factorErr={this.state.factorErr}
               week={this.state.week}
               weekErr={this.state.weekErr}
               year={this.state.year}
               yearErr={this.state.yearErr}
+              factorOption={this.state.factorOption}
               onStoreChange={(event) => {this.handleStoreChange(event)}}
               onFactorChange={(event) => {this.handleFactorChange(event)}}
               onWeekChange={(event) => {this.handleWeekChange(event)}}
