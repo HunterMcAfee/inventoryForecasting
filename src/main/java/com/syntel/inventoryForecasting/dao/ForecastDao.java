@@ -108,7 +108,7 @@ public class ForecastDao {
     }
 
     public List<QueryResult> getForecast(SearchParam searchParams, List<QueryResult> results) {
-        List<QueryResult> forecastResults = new ArrayList<QueryResult>();
+        List<QueryResult> forecastResults = new ArrayList<>();
         for (int i = 1; i <= 52; i++) {
             List<QueryResult> cacheList = new ArrayList<>();
             for (QueryResult result : results) {
@@ -119,18 +119,37 @@ public class ForecastDao {
 
             int averageQty = 0;
             if (cacheList.size() > 0) {
-                for (QueryResult weekResult : cacheList) {
-                    averageQty += weekResult.getQuantity();
+                if (cacheList.size() == 1) {
+                    List<QueryResult> weekRangeResults = new ArrayList<>();
+                    for (QueryResult weekResult : results) {
+                        if (weekResult.getWeek() <= i + 3 && weekResult.getWeek() >= i - 3) {
+                            weekRangeResults.add(weekResult);
+                        }
+                    }
+                    for (QueryResult weekResult : weekRangeResults) {
+                        averageQty += weekResult.getQuantity();
+                    }
+                    QueryResult weekForecast = new QueryResult();
+                    weekForecast.setSku_id(cacheList.get(0).getSku_id());
+                    weekForecast.setDescription(cacheList.get(0).getDescription());
+                    weekForecast.setWeek(cacheList.get(0).getWeek());
+                    weekForecast.setYear(2018);
+                    weekForecast.setFactor(searchParams.getFactor());
+                    weekForecast.setQuantity(averageQty / weekRangeResults.size());
+                    forecastResults.add(weekForecast);
+                } else {
+                    for (QueryResult weekResult : cacheList) {
+                        averageQty += weekResult.getQuantity();
+                    }
+                    QueryResult weekForecast = new QueryResult();
+                    weekForecast.setSku_id(cacheList.get(0).getSku_id());
+                    weekForecast.setDescription(cacheList.get(0).getDescription());
+                    weekForecast.setWeek(cacheList.get(0).getWeek());
+                    weekForecast.setYear(2018);
+                    weekForecast.setFactor(searchParams.getFactor());
+                    weekForecast.setQuantity(averageQty / cacheList.size());
+                    forecastResults.add(weekForecast);
                 }
-
-                QueryResult weekForecast = new QueryResult();
-                weekForecast.setSku_id(cacheList.get(0).getSku_id());
-                weekForecast.setDescription(cacheList.get(0).getDescription());
-                weekForecast.setWeek(cacheList.get(0).getWeek());
-                weekForecast.setYear(2018);
-                weekForecast.setFactor(cacheList.get(0).getFactor());
-                weekForecast.setQuantity(averageQty / cacheList.size());
-                forecastResults.add(weekForecast);
             }
         }
         return forecastResults;
