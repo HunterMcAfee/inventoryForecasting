@@ -67,11 +67,13 @@ export default class Forecast extends Component {
         let sku = document.getElementById('sku').value;
         let yearStart = document.getElementById('yearStart').value;
         if(yearStart === ""){
-            yearStart = 0
+            yearStart = (new Date()).getFullYear() - 1;
+            console.log("yearStart: ", yearStart);
         }
         let yearEnd = document.getElementById('yearEnd').value;
         if(yearEnd === ""){
             yearEnd = yearStart
+            console.log("yearEnd:", yearEnd);
         }
         let factor = this.state.factorTxt;
         if (factor === "Factor") {

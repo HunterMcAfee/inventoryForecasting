@@ -15,12 +15,17 @@ public class ForecastDao {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public List<QueryResult> getPastSales(SearchParam query) {
+    public List<QueryResult> getPastSales(SearchParam query, boolean avg) {
         String sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, sh_qty AS quantity";
+        if(avg){
+            sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, AVG(sh_qty) AS quantity";
+
+        }
         String sqlFrom = " FROM saleshistory, factors, skumaster";
         String sqlWhere = " WHERE sh_factor_id = f_id AND sh_sku_id = sku_id";
         String sqlConditions = "";
         String sqlOrder = " ORDER BY sh_year, sh_week";
+
         boolean sameYear = false;
         ArrayList<Object> arguments = new ArrayList<>();
 
@@ -37,16 +42,16 @@ public class ForecastDao {
             sqlConditions += " AND sh_sku_id = ?";
             arguments.add(query.getSku());
         }
-        if(query.getFactor() != "") {
-            sqlConditions += " AND f_description = ?";
-            arguments.add(query.getFactor());
-        }
-
+        //factor is for manipulation not searching
+//        if(query.getFactor() != "") {
+//            sqlConditions += " AND f_description = ?";
+//            arguments.add(query.getFactor());
+//        }
         if(query.getWeekStart() != 0){ //both weeks were filled out or least the first week was filled
             if(query.getYearStart() != 0){ //if both years exist
                 if(query.getYearStart() == query.getYearEnd()){ //if the same year
                     sameYear = true;
-                    sqlConditions += " AND sh_week >= 8 AND sh_week <= 50) AND sh_year >= 2016";
+                    sqlConditions += " AND (sh_week >= ? AND sh_week <= ?) AND sh_year >= ?";
                     arguments.add(query.getWeekStart()); arguments.add(query.getWeekEnd()); arguments.add(query.getYearStart());
                 }
                 else{//todo: range between years
