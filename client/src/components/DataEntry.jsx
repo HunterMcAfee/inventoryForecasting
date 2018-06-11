@@ -291,7 +291,7 @@ export default class DataEntry extends Component {
         </div>
 
         <div className="col-sm-3">
-             <input value={this.state.holdValueEntryList[element][2]} style={this.state.entryErr[element][2]} onChange={(event) => {this.handleEntryChange(event, element, 2)}} type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="storeNumber" placeholder="QTY SOld" />
+             <input value={this.state.holdValueEntryList[element][2]} style={this.state.entryErr[element][2]} onChange={(event) => {this.handleEntryChange(event, element, 2)}} type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="storeNumber" placeholder="QTY Sold" />
         </div>
 
         <div className="col-sm-2">

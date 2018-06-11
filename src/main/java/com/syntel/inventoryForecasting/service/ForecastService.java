@@ -1,6 +1,7 @@
 package com.syntel.inventoryForecasting.service;
 
 import com.syntel.inventoryForecasting.dao.ForecastDao;
+import com.syntel.inventoryForecasting.model.Factors;
 import com.syntel.inventoryForecasting.model.QueryResult;
 import com.syntel.inventoryForecasting.model.SearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,10 @@ import java.util.List;
 public class ForecastService {
     @Autowired
     ForecastDao forecastDao;
+
+    public List<Factors> getFactors(){
+        return forecastDao.getFactors();
+    }
 
     public List<QueryResult> getPastSales(SearchParam query) {
 
