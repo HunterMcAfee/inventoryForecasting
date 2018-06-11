@@ -58,3 +58,7 @@ h2{
 	padding: 3%;
 	display: inline-block;
 }
+
+.navbar-inverse {
+	border-radius: 0px;
+}

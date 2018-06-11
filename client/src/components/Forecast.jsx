@@ -23,7 +23,7 @@ export default class Forecast extends Component {
                 quantity: 1,
             },
             {
-                week: 1,
+                week: 2,
                 year: 2018,
                 factor: "XXXXX",
                 sku_id: "XXXXXXXX",
@@ -39,7 +39,7 @@ export default class Forecast extends Component {
                 quantity: 1,
             },
             {
-                week: 1,
+                week: 2,
                 year: 2018,
                 factor: "XXXXX",
                 sku_id: "XXXXXXXX",
@@ -67,11 +67,13 @@ export default class Forecast extends Component {
         let sku = document.getElementById('sku').value;
         let yearStart = document.getElementById('yearStart').value;
         if(yearStart === ""){
-            yearStart = 0
+            yearStart = (new Date()).getFullYear() - 1;
+            console.log("yearStart: ", yearStart);
         }
         let yearEnd = document.getElementById('yearEnd').value;
         if(yearEnd === ""){
             yearEnd = yearStart
+            console.log("yearEnd:", yearEnd);
         }
         let factor = this.state.factorTxt;
         if (factor === "Factor") {
@@ -109,7 +111,28 @@ export default class Forecast extends Component {
                 console.log(res);
                 this.setState({
                     pastInfo: res.data
-                })
+                })                
+                this.requestForecast(searchParams);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            
+        
+    }
+
+    requestForecast = (searchParams) => {
+        let payload = {
+            searchParams,
+            pastInfoResults: this.state.pastInfo
+        }
+        console.log(payload);
+        axios.post('http://localhost:8080/forecast', payload)
+            .then((res) => {
+                console.log(res);
+                this.setState({
+                    forecastInfo: res.data
+                })                
             })
             .catch((error) => {
                 console.log(error);
