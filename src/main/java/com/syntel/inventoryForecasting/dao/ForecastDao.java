@@ -1,5 +1,6 @@
 package com.syntel.inventoryForecasting.dao;
 
+import com.syntel.inventoryForecasting.model.FactorMultiplier;
 import com.syntel.inventoryForecasting.model.Factors;
 import com.syntel.inventoryForecasting.model.QueryResult;
 import com.syntel.inventoryForecasting.model.SearchParam;
@@ -153,5 +154,11 @@ public class ForecastDao {
             }
         }
         return forecastResults;
+    }
+
+    public FactorMultiplier getFactorMultiplier(SearchParam query) {
+        String sql = "SELECT sku_id,";
+
+        return new FactorMultiplier();
     }
 }

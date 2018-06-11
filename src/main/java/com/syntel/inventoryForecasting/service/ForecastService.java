@@ -1,6 +1,7 @@
 package com.syntel.inventoryForecasting.service;
 
 import com.syntel.inventoryForecasting.dao.ForecastDao;
+import com.syntel.inventoryForecasting.model.FactorMultiplier;
 import com.syntel.inventoryForecasting.model.Factors;
 import com.syntel.inventoryForecasting.model.QueryResult;
 import com.syntel.inventoryForecasting.model.SearchParam;
@@ -56,5 +57,10 @@ public class ForecastService {
     }
 
     public List<QueryResult> getForecast(SearchParam searchParams, List<QueryResult> pastInfoResults) {
-        return forecastDao.getForecast(searchParams, pastInfoResults); }
+        return forecastDao.getForecast(searchParams, pastInfoResults);
+    }
+
+    public FactorMultiplier getFactorMultiplier(SearchParam query) {
+        return forecastDao.getFactorMultiplier(query);
+    }
 }
