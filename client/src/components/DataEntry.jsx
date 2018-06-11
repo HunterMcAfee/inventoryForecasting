@@ -261,7 +261,7 @@ export default class DataEntry extends Component {
 
       <div>
 
-        <h1> Data Entry </h1>
+        <h1 className="pageHeader"> Weekly Sales Report </h1>
         <br/>
 
    			<form className="form-inline">

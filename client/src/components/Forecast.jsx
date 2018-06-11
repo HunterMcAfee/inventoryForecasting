@@ -169,7 +169,7 @@ export default class Forecast extends Component {
     render() {
         return (
             <div>
-                <h1>Forecast</h1>
+                <h1 className="pageHeader">Forecast</h1>
                 <br />
                 <form className="searchBox row" onSubmit={this.handleSubmit}>
                     <div className="col1 col-sm-12 col-lg-2 col-lg-offset-1">
