@@ -22,12 +22,9 @@ public class ForecastDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Factors.class));
     }
 
-    public List<QueryResult> getPastSales(SearchParam query, boolean avg) {
+    public List<QueryResult> getPastSales(SearchParam query) {
         String sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, sh_qty AS quantity";
-        if(avg){
-            sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, AVG(sh_qty) AS quantity";
 
-        }
         String sqlFrom = " FROM saleshistory, factors, skumaster";
         String sqlWhere = " WHERE sh_factor_id = f_id AND sh_sku_id = sku_id";
         String sqlConditions = "";
