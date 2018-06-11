@@ -60,7 +60,7 @@ public class ForecastService {
         return forecastDao.getForecast(searchParams, pastInfoResults);
     }
 
-    public FactorMultiplier getFactorMultiplier(SearchParam query) {
+    public List<FactorMultiplier> getFactorMultiplier(SearchParam query) {
         return forecastDao.getFactorMultiplier(query);
     }
 }

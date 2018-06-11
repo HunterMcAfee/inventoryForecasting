@@ -32,7 +32,7 @@ public class ForecastController {
 
     @CrossOrigin
     @PostMapping("/factorMultiplier")
-    public FactorMultiplier getFactorMultiplier(@RequestBody SearchParam query) {
+    public List<FactorMultiplier> getFactorMultiplier(@RequestBody SearchParam query) {
         return forecastService.getFactorMultiplier(query);
     }
 }

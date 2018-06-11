@@ -18,14 +18,14 @@ public class ForecastDao {
     JdbcTemplate jdbcTemplate;
 
     public List<Factors> getFactors(){
-        String sql = "Select f_description FROM factors";
+        String sql = "Select f_description FROM forecast_capstone.factors";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Factors.class));
     }
 
     public List<QueryResult> getPastSales(SearchParam query) {
         String sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, sh_qty AS quantity";
 
-        String sqlFrom = " FROM saleshistory, factors, skumaster";
+        String sqlFrom = " FROM forecast_capstone.saleshistory, forecast_capstone.factors, forecast_capstone.skumaster";
         String sqlWhere = " WHERE sh_factor_id = f_id AND sh_sku_id = sku_id";
         String sqlConditions = "";
         String sqlOrder = " ORDER BY sh_year, sh_week";
@@ -117,6 +117,7 @@ public class ForecastDao {
 
             int averageQty = 0;
             if (cacheList.size() > 0) {
+                // todo: Check for weeks 1-3 and add to 49
                 if (cacheList.size() == 1) {
                     List<QueryResult> weekRangeResults = new ArrayList<>();
                     for (QueryResult weekResult : results) {
@@ -153,9 +154,17 @@ public class ForecastDao {
         return forecastResults;
     }
 
-    public FactorMultiplier getFactorMultiplier(SearchParam query) {
-        String sql = "SELECT sku_id,";
-
-        return new FactorMultiplier();
+    public List<FactorMultiplier> getFactorMultiplier(SearchParam query) {
+        String sql = "SELECT sf_sign, sf_percentvalue FROM forecast_capstone.salesfactor, forecast_capstone.saleshistory, forecast_capstone.factors WHERE sf_sh_id = sh_id AND sf_f_id = f_id ";
+        ArrayList<Object> arguments = new ArrayList<>();
+        if(query.getStr() != ""){
+            sql += " AND sh_str_id = ?";
+            arguments.add(query.getStr());
+        }
+        if(query.getFactor() != "") {
+            sql += " AND f_description = ?";
+            arguments.add(query.getFactor());
+        }
+        return jdbcTemplate.query(sql, arguments.toArray(), new BeanPropertyRowMapper<>(FactorMultiplier.class));
     }
 }

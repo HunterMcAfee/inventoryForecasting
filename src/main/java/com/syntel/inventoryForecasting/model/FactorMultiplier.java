@@ -1,30 +1,30 @@
 package com.syntel.inventoryForecasting.model;
 
 public class FactorMultiplier {
-    private float factorMultiplier;
-    private boolean sign;
+    private int sf_percentage;
+    private boolean sf_sign;
 
     public FactorMultiplier() {
     }
 
-    public FactorMultiplier(float factorMultiplier, boolean sign) {
-        this.factorMultiplier = factorMultiplier;
-        this.sign = sign;
+    public FactorMultiplier(int sf_percentage, boolean sf_sign) {
+        this.sf_percentage = sf_percentage;
+        this.sf_sign = sf_sign;
     }
 
-    public float getFactorMultiplier() {
-        return factorMultiplier;
+    public int getSf_percentage() {
+        return sf_percentage;
     }
 
-    public void setFactorMultiplier(float factorMultiplier) {
-        this.factorMultiplier = factorMultiplier;
+    public void setSf_percentage(int sf_percentage) {
+        this.sf_percentage = sf_percentage;
     }
 
-    public boolean isSign() {
-        return sign;
+    public boolean isSf_sign() {
+        return sf_sign;
     }
 
-    public void setSign(boolean sign) {
-        this.sign = sign;
+    public void setSf_sign(boolean sf_sign) {
+        this.sf_sign = sf_sign;
     }
 }

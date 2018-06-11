@@ -54,10 +54,9 @@ export default class Forecast extends Component {
         // make axios call to our backend for all str incase new factors have been added
         axios.post('http://localhost:8080/factors')
             .then((res) => {
-                console.log(res);
                 this.setState({
                     factors: res.data
-                }) 
+                })
             })
             .catch((error) => {
                 console.log(error);
@@ -71,14 +70,12 @@ export default class Forecast extends Component {
         let str = document.getElementById('str').value;
         let sku = document.getElementById('sku').value;
         let yearStart = document.getElementById('yearStart').value;
-        if(yearStart === ""){
+        if (yearStart === "") {
             yearStart = (new Date()).getFullYear() - 1;
-            console.log("yearStart: ", yearStart);
         }
         let yearEnd = document.getElementById('yearEnd').value;
-        if(yearEnd === ""){
+        if (yearEnd === "") {
             yearEnd = yearStart
-            console.log("yearEnd:", yearEnd);
         }
         let factor = this.state.factorTxt;
         if (factor === "Factor") {
@@ -89,11 +86,11 @@ export default class Forecast extends Component {
             type = ""
         }
         let weekStart = this.state.weekStr;
-        if(weekStart === "Week Start"){
+        if (weekStart === "Week Start") {
             weekStart = 0
         }
         let weekEnd = this.state.weekEd;
-        if(weekEnd === "Week End"){
+        if (weekEnd === "Week End") {
             weekEnd = weekStart
         }
 
@@ -105,25 +102,42 @@ export default class Forecast extends Component {
             weekStart: weekStart,
             yearStart: yearStart,
             weekEnd: weekEnd,
-            yearEnd: yearEnd,
-
+            yearEnd: yearEnd
         }
-
-        console.log(searchParams);
 
         axios.post('http://localhost:8080/past', searchParams)
             .then((res) => {
-                console.log(res);
                 this.setState({
                     pastInfo: res.data
-                })                
+                })
                 this.requestForecast(searchParams);
             })
             .catch((error) => {
                 console.log(error);
             })
-            
-        
+
+        axios.post('http://localhost:8080/factorMultiplier', searchParams)
+            .then((res) => {
+                let multiplierData = res.data;
+                console.log(multiplierData);
+                let factorMultiplier = 0;
+                multiplierData.map((multiplier) => {
+                    if (multiplier.sf_sign == true) {
+                        factorMultiplier + multiplier.sf_percentage;
+                    } else if (multiplier.sign == false) {
+                        factorMultiplier - multiplier.sf_sign;
+                    } 
+                })
+                factorMultiplier = ((factorMultiplier / res.data.length) / 100);
+                console.log(factorMultiplier);
+                this.setState({
+                    factorMultiplier: factorMultiplier
+                })
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
     }
 
     requestForecast = (searchParams) => {
@@ -131,13 +145,11 @@ export default class Forecast extends Component {
             searchParams,
             pastInfoResults: this.state.pastInfo
         }
-        console.log(payload);
         axios.post('http://localhost:8080/forecast', payload)
             .then((res) => {
-                console.log(res);
                 this.setState({
                     forecastInfo: res.data
-                })                
+                })
             })
             .catch((error) => {
                 console.log(error);
@@ -249,11 +261,11 @@ export default class Forecast extends Component {
                     </div>
                 </form>
                 <h2>Forecast: </h2>
-                <SearchInfo searchInfo={this.state.forecastInfo} />
+                <SearchInfo searchInfo={this.state.forecastInfo} factorMultiplier={this.state.factorMultiplier} />
                 <h2>Past Sales: </h2>
                 <SearchInfo searchInfo={this.state.pastInfo} />
-                <br/>
-                <br/>
+                <br />
+                <br />
             </div>
         )
     }

@@ -17,7 +17,7 @@ export default class ForecastInfo extends Component {
 					      <td>{item.factor}</td>
 					      <td>{item.sku_id}</td>
 					      <td>{item.description}</td>
-					      <td>{item.quantity}</td>
+					      <td>{item.quantity * this.props.forecastMulitplier}</td>
 			    	</tr>)
 		})
 		return weeklyBox;
