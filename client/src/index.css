@@ -62,3 +62,11 @@ h2{
 .navbar-inverse {
 	border-radius: 0px;
 }
+
+.pageHeader {
+	background-color: rgb(35,35,35);
+	color: white;
+	border-radius: 5px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}

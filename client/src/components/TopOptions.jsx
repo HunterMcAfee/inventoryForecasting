@@ -22,12 +22,9 @@ class TopOptions extends Component{
 
   render(){
 
-		let factorOption = ["Normal Day", "Rain", "Hurricane", "Snow", 
-												"Zombie Apocalypse", "Father's day", "Fourth of July", 
-												"Mother's day", "Memorial day", "Black Friday"];
 		let displayFactors = [];
-		for(let j = 0; j < factorOption.length; j++) {
-			displayFactors.push(<option key={factorOption[j]}>{factorOption[j]}</option>)
+		for(let j = 0; j < this.props.factorOption.length; j++) {
+			displayFactors.push(<option key={this.props.factorOption[j].f_id}>{this.props.factorOption[j].f_description}</option>)
 		}
 
 		let weekOption = [];
@@ -38,7 +35,7 @@ class TopOptions extends Component{
 		return(
 			<div className="row">
 				<div className="col-sm-3 sideInput" >
-					<input className="topInput form-control mb-2 mr-sm-2 mb-sm-0 store" value={this.props.storeNum} onChange={(event) => {this.handleStoreChange(event)}} type="text" id="storeNumber" placeholder="Store Number" />
+					<input style={this.props.strErr} className="topInput form-control mb-2 mr-sm-2 mb-sm-0 store" value={this.props.storeNum} onChange={(event) => {this.handleStoreChange(event)}} type="text" id="storeNumber" placeholder="Store Number" />
 				</div>
 
 				<div className="col-sm-3 ">
