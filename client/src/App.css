@@ -75,3 +75,11 @@ width: 100% !important;
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.topInput{
+  width: 100%;
+}
+
+.sideInput{
+  text-align: center;
+}
