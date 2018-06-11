@@ -52,11 +52,16 @@ export default class Forecast extends Component {
 
     componentDidMount() {
         // make axios call to our backend for all str incase new factors have been added
-
-        this.setState({
-            // factors: 
-            factors: ['Rain', 'Snow']
-        })
+        axios.post('http://localhost:8080/factors')
+            .then((res) => {
+                console.log(res);
+                this.setState({
+                    factors: res.data
+                }) 
+            })
+            .catch((error) => {
+                console.log(error);
+            })
 
     }
 
@@ -204,7 +209,7 @@ export default class Forecast extends Component {
                                 {/* List all factors in our current factor arr in state */}
                                 {this.state.factors.map((factor, i) => {
                                     return (
-                                        <li className="pointer" value={factor} onClick={(event) => { this.changeFactorText(event) }} key={i}>{factor}</li>
+                                        <li className="pointer" value={factor.f_description} onClick={(event) => { this.changeFactorText(event) }} key={i}>{factor.f_description}</li>
                                     )
                                 })}
                             </ul>

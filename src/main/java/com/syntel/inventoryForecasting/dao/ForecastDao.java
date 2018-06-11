@@ -1,5 +1,6 @@
 package com.syntel.inventoryForecasting.dao;
 
+import com.syntel.inventoryForecasting.model.Factors;
 import com.syntel.inventoryForecasting.model.QueryResult;
 import com.syntel.inventoryForecasting.model.SearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,11 @@ import java.util.List;
 public class ForecastDao {
     @Autowired
     JdbcTemplate jdbcTemplate;
+
+    public List<Factors> getFactors(){
+        String sql = "Select f_description FROM factors";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Factors.class));
+    }
 
     public List<QueryResult> getPastSales(SearchParam query, boolean avg) {
         String sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, sh_qty AS quantity";
