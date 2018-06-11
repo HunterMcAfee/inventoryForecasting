@@ -23,7 +23,7 @@ export default class Forecast extends Component {
                 quantity: 1,
             },
             {
-                week: 1,
+                week: 2,
                 year: 2018,
                 factor: "XXXXX",
                 sku_id: "XXXXXXXX",
@@ -39,7 +39,7 @@ export default class Forecast extends Component {
                 quantity: 1,
             },
             {
-                week: 1,
+                week: 2,
                 year: 2018,
                 factor: "XXXXX",
                 sku_id: "XXXXXXXX",
@@ -109,7 +109,28 @@ export default class Forecast extends Component {
                 console.log(res);
                 this.setState({
                     pastInfo: res.data
-                })
+                })                
+                this.requestForecast(searchParams);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            
+        
+    }
+
+    requestForecast = (searchParams) => {
+        let payload = {
+            searchParams,
+            pastInfoResults: this.state.pastInfo
+        }
+        console.log(payload);
+        axios.post('http://localhost:8080/forecast', payload)
+            .then((res) => {
+                console.log(res);
+                this.setState({
+                    forecastInfo: res.data
+                })                
             })
             .catch((error) => {
                 console.log(error);

@@ -16,4 +16,7 @@ public class ForecastService {
     public List<QueryResult> getPastSales(SearchParam query) {
         return forecastDao.getPastSales(query);
     }
+
+    public List<QueryResult> getForecast(SearchParam searchParams, List<QueryResult> pastInfoResults) {
+        return forecastDao.getForecast(searchParams, pastInfoResults); }
 }
