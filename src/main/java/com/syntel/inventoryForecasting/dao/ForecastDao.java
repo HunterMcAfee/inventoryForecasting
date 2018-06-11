@@ -101,5 +101,32 @@ public class ForecastDao {
         return jdbcTemplate.query(sql, arguments.toArray(), new BeanPropertyRowMapper<>(QueryResult.class));
     }
 
+    public List<QueryResult> getForecast(SearchParam searchParams, List<QueryResult> results) {
+        List<QueryResult> forecastResults = new ArrayList<QueryResult>();
+        for (int i = 1; i <= 52; i++) {
+            List<QueryResult> cacheList = new ArrayList<>();
+            for (QueryResult result : results) {
+                if (result.getWeek() == i) {
+                    cacheList.add(result);
+                }
+            }
 
+            int averageQty = 0;
+            if (cacheList.size() > 0) {
+                for (QueryResult weekResult : cacheList) {
+                    averageQty += weekResult.getQuantity();
+                }
+
+                QueryResult weekForecast = new QueryResult();
+                weekForecast.setSku_id(cacheList.get(0).getSku_id());
+                weekForecast.setDescription(cacheList.get(0).getDescription());
+                weekForecast.setWeek(cacheList.get(0).getWeek());
+                weekForecast.setYear(2018);
+                weekForecast.setFactor(cacheList.get(0).getFactor());
+                weekForecast.setQuantity(averageQty / cacheList.size());
+                forecastResults.add(weekForecast);
+            }
+        }
+        return forecastResults;
+    }
 }

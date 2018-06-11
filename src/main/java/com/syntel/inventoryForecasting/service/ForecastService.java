@@ -49,4 +49,7 @@ public class ForecastService {
 
         return results;
     }
+
+    public List<QueryResult> getForecast(SearchParam searchParams, List<QueryResult> pastInfoResults) {
+        return forecastDao.getForecast(searchParams, pastInfoResults); }
 }
