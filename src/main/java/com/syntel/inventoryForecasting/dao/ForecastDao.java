@@ -46,12 +46,22 @@ public class ForecastDao {
             if(query.getYearStart() != 0){ //if both years exist
                 if(query.getYearStart() == query.getYearEnd()){ //if the same year
                     sameYear = true;
-                    sqlConditions += "AND sh_week >= 8 AND sh_week <= 50) AND sh_year >= 2016";
-                    arguments.add(query.getWeekStart());
-                    arguments.add(query.getWeekEnd());
-                    arguments.add(query.getYearStart());
+                    sqlConditions += " AND sh_week >= 8 AND sh_week <= 50) AND sh_year >= 2016";
+                    arguments.add(query.getWeekStart()); arguments.add(query.getWeekEnd()); arguments.add(query.getYearStart());
                 }
                 else{//todo: range between years
+                    sqlConditions += "  AND ((sh_week >= ? AND sh_year = ?) OR sh_year > ? )";
+                    arguments.add(query.getWeekStart()); arguments.add(query.getYearStart()); arguments.add(query.getYearStart());
+
+                    String outterSQL = "SELECT strPoint.* FROM (";
+                    String innerSQL  = sqlSelect + sqlFrom + sqlWhere + sqlConditions + sqlOrder;
+                    outterSQL += innerSQL;
+                    outterSQL += ") strPoint WHERE NOT (week > ? AND year >= ?)";
+
+                    arguments.add(query.getWeekEnd());
+                    arguments.add(query.getYearEnd());
+
+                    return jdbcTemplate.query(outterSQL, arguments.toArray(), new BeanPropertyRowMapper<>(QueryResult.class));
 
                 }
             }
@@ -61,8 +71,7 @@ public class ForecastDao {
             }
             else{ //no year was filled out
                 sqlConditions += " AND sh_week >= ? AND sh_week <= ? ";
-                arguments.add(query.getWeekStart());
-                arguments.add(query.getWeekEnd());
+                arguments.add(query.getWeekStart()); arguments.add(query.getWeekEnd());
             }
         }
         else if(query.getWeekEnd() != 0){
@@ -82,8 +91,7 @@ public class ForecastDao {
                 }
         }
 
-        String sql  = sqlSelect + sqlFrom + sqlWhere + sqlConditions + sqlOrder;
-
+        String sql  = sqlSelect + sqlFrom + sqlWhere + sqlConditions +  sqlOrder;
 
         return jdbcTemplate.query(sql, arguments.toArray(), new BeanPropertyRowMapper<>(QueryResult.class));
     }
