@@ -24,7 +24,6 @@ public class ForecastDao {
 
     public List<QueryResult> getPastSales(SearchParam query) {
         String sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, sh_qty AS quantity";
-
         String sqlFrom = " FROM forecast_capstone.saleshistory, forecast_capstone.factors, forecast_capstone.skumaster";
         String sqlWhere = " WHERE sh_factor_id = f_id AND sh_sku_id = sku_id";
         String sqlConditions = "";
@@ -47,9 +46,13 @@ public class ForecastDao {
         }
 
         if(query.getWeekStart() != 0){ //both weeks were filled out or least the first week was filled
+            System.out.println("Both weeks");
             if(query.getYearStart() != 0){ //if both years exist
+                System.out.println("Both eyars");
                 if(query.getYearStart() == query.getYearEnd()){ //if the same year
-                    sqlConditions += " AND (sh_week >= ? AND sh_week <= ?) AND sh_year >= ?";
+                    System.out.println("Same year");
+                    System.out.println(query.getYearStart());
+                    sqlConditions += " AND (sh_week >= ? AND sh_week <= ?) AND sh_year = ?";
                     arguments.add(query.getWeekStart()); arguments.add(query.getWeekEnd()); arguments.add(query.getYearStart());
                 }
                 else{//todo: range between years
@@ -83,7 +86,9 @@ public class ForecastDao {
         }
 
         if(query.getWeekStart() == 0 && query.getWeekEnd() == 0){
+            System.out.println("1");
                 if(query.getYearStart() != 0){
+                    System.out.println("2");
                     sqlConditions += " AND sh_year >= ? AND sh_year <= ?";
                     arguments.add(query.getYearStart());
                     arguments.add(query.getYearEnd());
@@ -97,6 +102,74 @@ public class ForecastDao {
         String sql  = sqlSelect + sqlFrom + sqlWhere + sqlConditions +  sqlOrder;
 
         return jdbcTemplate.query(sql, arguments.toArray(), new BeanPropertyRowMapper<>(QueryResult.class));
+    }
+
+    public List<QueryResult> getDifferentStoresales(SearchParam query){
+        String sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, sh_qty AS quantity";
+        String sqlFrom = " FROM forecast_capstone.saleshistory, forecast_capstone.factors, forecast_capstone.skumaster, forecast_capstone.strmaster, (SELECT str_type AS stype FROM forecast_capstone.strmaster WHERE str_id = ?) strtype";
+        String sqlWhere = " WHERE sh_factor_id = f_id AND sh_sku_id = sku_id AND sh_str_id = str_id AND stype = str_type";
+        String sqlConditions = "";
+        String sqlOrder = " ORDER BY sh_year, sh_week";
+
+        ArrayList<Object> arguments = new ArrayList<>();
+        arguments.add(query.getStr());
+
+        if(query.getSku() != ""){
+            sqlConditions += " AND sh_sku_id = ?";
+            arguments.add(query.getSku());
+        }
+
+        if(query.getWeekStart() != 0){ //both weeks were filled out or least the first week was filled
+            if(query.getYearStart() != 0){ //if both years exist
+                if(query.getYearStart() == query.getYearEnd()){ //if the same year
+                    sqlConditions += " AND (sh_week >= ? AND sh_week <= ?) AND sh_year = ?";
+                    arguments.add(query.getWeekStart()); arguments.add(query.getWeekEnd()); arguments.add(query.getYearStart());
+                }
+                else{//todo: range between years
+                    sqlConditions += "  AND ((sh_week >= ? AND sh_year = ?) OR sh_year > ? )";
+                    arguments.add(query.getWeekStart()); arguments.add(query.getYearStart()); arguments.add(query.getYearStart());
+
+                    String outterSQL = "SELECT strPoint.* FROM (";
+                    String innerSQL  = sqlSelect + sqlFrom + sqlWhere + sqlConditions + sqlOrder;
+                    outterSQL += innerSQL;
+                    outterSQL += ") strPoint WHERE NOT (week > ? AND year >= ?)";
+
+                    arguments.add(query.getWeekEnd());
+                    arguments.add(query.getYearEnd());
+
+                    return jdbcTemplate.query(outterSQL, arguments.toArray(), new BeanPropertyRowMapper<>(QueryResult.class));
+
+                }
+            }
+            else if(query.getYearEnd() != 0){ //only filled the endyear box and not the start year
+                sqlConditions += " AND sh_year = ?";
+                arguments.add(query.getYearEnd());
+            }
+            else{ //no year was filled out
+                sqlConditions += " AND sh_week >= ? AND sh_week <= ? ";
+                arguments.add(query.getWeekStart()); arguments.add(query.getWeekEnd());
+            }
+        }
+        else if(query.getWeekEnd() != 0){
+            sqlConditions += " AND sh_year = ?";
+            arguments.add(query.getWeekEnd());
+        }
+
+        if(query.getWeekStart() == 0 && query.getWeekEnd() == 0){
+            if(query.getYearStart() != 0){
+                sqlConditions += " AND sh_year >= ? AND sh_year <= ?";
+                arguments.add(query.getYearStart());
+                arguments.add(query.getYearEnd());
+            }
+            else if(query.getYearEnd() != 0){
+                sqlConditions += " AND sh_year = ?";
+                arguments.add(query.getYearEnd());
+            }
+        }
+
+        String sql  = sqlSelect + sqlFrom + sqlWhere + sqlConditions +  sqlOrder;
+
+        return jdbcTemplate.query("", arguments.toArray(), new BeanPropertyRowMapper<>(QueryResult.class));
     }
 
     public List<QueryResult> getForecast(SearchParam searchParams, List<QueryResult> results) {
