@@ -155,16 +155,28 @@ public class ForecastDao {
     }
 
     public List<FactorMultiplier> getFactorMultiplier(SearchParam query) {
-        String sql = "SELECT sf_sign, sf_percentvalue FROM forecast_capstone.salesfactor, forecast_capstone.saleshistory, forecast_capstone.factors WHERE sf_sh_id = sh_id AND sf_f_id = f_id ";
-        ArrayList<Object> arguments = new ArrayList<>();
-        if(query.getStr() != ""){
-            sql += " AND sh_str_id = ?";
-            arguments.add(query.getStr());
+        if (query.getFactor().equalsIgnoreCase("Normal Day")) {
+            FactorMultiplier factorMultiplier = new FactorMultiplier(100, true);
+            List<FactorMultiplier> factorMultiplierArrayList = new ArrayList<>();
+            factorMultiplierArrayList.add(factorMultiplier);
+            return factorMultiplierArrayList;
+        } else if (query.getFactor() != "") {
+            String sql = "SELECT sf_sign, sf_percentvalue FROM forecast_capstone.salesfactor, forecast_capstone.saleshistory, forecast_capstone.factors WHERE sf_sh_id = sh_id AND sf_f_id = f_id ";
+            ArrayList<Object> arguments = new ArrayList<>();
+            if (query.getStr() != "") {
+                sql += " AND sh_str_id = ?";
+                arguments.add(query.getStr());
+            }
+            if (query.getFactor() != "") {
+                sql += " AND f_description = ?";
+                arguments.add(query.getFactor());
+            }
+            return jdbcTemplate.query(sql, arguments.toArray(), new BeanPropertyRowMapper<>(FactorMultiplier.class));
+        } else {
+            FactorMultiplier factorMultiplier = new FactorMultiplier(100, true);
+            List<FactorMultiplier> factorMultiplierArrayList = new ArrayList<>();
+            factorMultiplierArrayList.add(factorMultiplier);
+            return factorMultiplierArrayList;
         }
-        if(query.getFactor() != "") {
-            sql += " AND f_description = ?";
-            arguments.add(query.getFactor());
-        }
-        return jdbcTemplate.query(sql, arguments.toArray(), new BeanPropertyRowMapper<>(FactorMultiplier.class));
     }
 }
