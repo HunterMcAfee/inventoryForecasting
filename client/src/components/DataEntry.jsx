@@ -232,9 +232,11 @@ export default class DataEntry extends Component {
       for(let j=0; j<3; j++){
         if(j !== 1){
           if(this.state.holdValueEntryList[i][j].length === 8 || (j > 0 && this.state.holdValueEntryList[i][j] !=="")){
+            if(this.state.holdValueEntryList[i][j].length === 8){
+              skuDataList.push(this.state.holdValueEntryList[i][0]);
+              soldQuantity.push(parseInt(this.state.holdValueEntryList[i][2],10))
+            }
             let tempEntryErr = this.state.entryErr;
-            skuDataList.push(this.state.holdValueEntryList[i][0]);
-            soldQuantity.push(parseInt(this.state.holdValueEntryList[i][2],10))
             tempEntryErr[i][j] = borderSuccess
             this.setState({entryErr: tempEntryErr});
           } else {
@@ -247,6 +249,8 @@ export default class DataEntry extends Component {
       } 
     }    
 
+    console.log(skuDataList)
+    console.log(soldQuantity)
 
     if(anyErrors){
       console.log("There was an user Error");
