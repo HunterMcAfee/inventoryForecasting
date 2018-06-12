@@ -30,7 +30,6 @@ public class ForecastDao {
         String sqlConditions = "";
         String sqlOrder = " ORDER BY sh_year, sh_week";
 
-        boolean sameYear = false;
         ArrayList<Object> arguments = new ArrayList<>();
 
         if(query.getType() != ""){
@@ -46,15 +45,10 @@ public class ForecastDao {
             sqlConditions += " AND sh_sku_id = ?";
             arguments.add(query.getSku());
         }
-        //factor is for manipulation not searching
-//        if(query.getFactor() != "") {
-//            sqlConditions += " AND f_description = ?";
-//            arguments.add(query.getFactor());
-//        }
+
         if(query.getWeekStart() != 0){ //both weeks were filled out or least the first week was filled
             if(query.getYearStart() != 0){ //if both years exist
                 if(query.getYearStart() == query.getYearEnd()){ //if the same year
-                    sameYear = true;
                     sqlConditions += " AND (sh_week >= ? AND sh_week <= ?) AND sh_year >= ?";
                     arguments.add(query.getWeekStart()); arguments.add(query.getWeekEnd()); arguments.add(query.getYearStart());
                 }

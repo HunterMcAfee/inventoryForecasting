@@ -232,9 +232,11 @@ export default class DataEntry extends Component {
       for(let j=0; j<3; j++){
         if(j !== 1){
           if(this.state.holdValueEntryList[i][j].length === 8 || (j > 0 && this.state.holdValueEntryList[i][j] !=="")){
+            if(this.state.holdValueEntryList[i][j].length === 8){
+              skuDataList.push(this.state.holdValueEntryList[i][0]);
+              soldQuantity.push(parseInt(this.state.holdValueEntryList[i][2],10))
+            }
             let tempEntryErr = this.state.entryErr;
-            skuDataList.push(this.state.holdValueEntryList[i][0]);
-            soldQuantity.push(parseInt(this.state.holdValueEntryList[i][2],10))
             tempEntryErr[i][j] = borderSuccess
             this.setState({entryErr: tempEntryErr});
           } else {
@@ -247,6 +249,8 @@ export default class DataEntry extends Component {
       } 
     }    
 
+    console.log(skuDataList)
+    console.log(soldQuantity)
 
     if(anyErrors){
       console.log("There was an user Error");
@@ -271,7 +275,7 @@ export default class DataEntry extends Component {
 
     axios.post("http://localhost:8080/dataEntry", obj)
     .then((res) => {
-      // console.log(res.data);
+      console.log(res.data);
       // this.setState({
       //     pastInfo: res.data
       // })
@@ -364,7 +368,7 @@ export default class DataEntry extends Component {
         year={this.state.year}
         holdValue={this.state.holdValueEntryList}
         onClose={(event)=>{this.handleCloseModal(event)}}
-        onSubmit={(event)=>{this.handleFinalSubmit(event)}}
+        onSubmit={(event)=>{this.handleSubmit(event)}}
       />
       {/* <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" display={this.state.modalDisplay} aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
