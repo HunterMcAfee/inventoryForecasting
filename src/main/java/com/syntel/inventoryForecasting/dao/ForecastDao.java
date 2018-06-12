@@ -192,7 +192,9 @@ public class ForecastDao {
                 weekForecast.setDescription(cacheList.get(0).getDescription());
                 weekForecast.setWeek(cacheList.get(0).getWeek());
                 weekForecast.setYear(2018);
-                weekForecast.setFactor(searchParams.getFactor());
+                if (!cacheList.get(0).getFactor().isEmpty()) {
+                    weekForecast.setFactor(cacheList.get(0).getFactor());
+                }
                 weekForecast.setQuantity(averageQty / cacheList.size());
                 forecastResults.add(weekForecast);
             } else if (cacheList.size() == 1) {
@@ -205,7 +207,9 @@ public class ForecastDao {
                 weekForecast.setDescription(cacheList.get(0).getDescription());
                 weekForecast.setWeek(cacheList.get(0).getWeek());
                 weekForecast.setYear(2018);
-                weekForecast.setFactor(searchParams.getFactor());
+                if (!cacheList.get(0).getFactor().isEmpty()) {
+                    weekForecast.setFactor(cacheList.get(0).getFactor());
+                }
                 weekForecast.setQuantity(averageQty);
                 forecastResults.add(weekForecast);
             }

@@ -66,7 +66,6 @@ export default class Forecast extends Component {
 
     handleSubmit = (event) => {
         event.preventDefault();
-
         let str = document.getElementById('str').value;
         let sku = document.getElementById('sku').value;
         let yearStart = document.getElementById('yearStart').value;
@@ -131,6 +130,11 @@ export default class Forecast extends Component {
                     factorMultiplier = ((factorMultiplier / res.data.length) / 100);
                     this.setState({
                         factorMultiplier: factorMultiplier
+                    })
+                } else {
+                    alert("No factor data is available. Showing available schemes.");
+                    this.setState({
+                        factorTxt: "Factor"
                     })
                 }
             })

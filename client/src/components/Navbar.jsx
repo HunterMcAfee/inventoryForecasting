@@ -18,8 +18,9 @@ export default class Navbar extends Component {
                         </div>
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav">
-                                <li><Link to="/forecast">Forecast<span className="sr-only">(current)</span></Link></li>
-                                <li><Link to="/DataEntry">Weekly Sales Report</Link></li>
+                                <li><Link to="/DataEntry">Weekly Sales Report<span className="sr-only">(current)</span></Link></li>
+                                <li><Link to="/forecast">Forecast</Link></li>
+                                
                             </ul>
                         </div>
                     </div>

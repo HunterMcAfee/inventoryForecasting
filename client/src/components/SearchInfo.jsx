@@ -14,7 +14,7 @@ export default class SearchInfo extends Component {
 					      <th scope="row">{i + 1}</th>
 					      <td>{item.week}</td>
 					      <td>{item.year}</td>
-					      <td>{item.factor}</td>
+					      <td>{item.factor ? item.factor : "-"}</td>
 					      <td>{item.sku_id}</td>
 					      <td>{item.description}</td>
 					      <td>{Math.floor(item.quantity * (this.props.factorMultiplier ? Math.abs(this.props.factorMultiplier) : 1))}</td>
