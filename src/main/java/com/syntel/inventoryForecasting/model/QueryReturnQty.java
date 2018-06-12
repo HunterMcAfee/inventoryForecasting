@@ -10,11 +10,11 @@ public class QueryReturnQty {
         this.avg_qty = avg_qty;
     }
 
-    public int getAvg_qty() {
+    public Integer getAvg_qty() {
         return avg_qty;
     }
 
-    public void setAvg_qty(int avg_qty) {
+    public void setAvg_qty(Integer avg_qty) {
         this.avg_qty = avg_qty;
     }
 }
