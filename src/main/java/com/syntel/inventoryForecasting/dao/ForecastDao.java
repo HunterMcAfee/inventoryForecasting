@@ -1,5 +1,7 @@
 package com.syntel.inventoryForecasting.dao;
 
+import com.syntel.inventoryForecasting.model.FactorMultiplier;
+import com.syntel.inventoryForecasting.model.Factors;
 import com.syntel.inventoryForecasting.model.QueryResult;
 import com.syntel.inventoryForecasting.model.SearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +17,15 @@ public class ForecastDao {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public List<QueryResult> getPastSales(SearchParam query, boolean avg) {
-        String sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, sh_qty AS quantity";
-        if(avg){
-            sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, AVG(sh_qty) AS quantity";
+    public List<Factors> getFactors(){
+        String sql = "Select f_description FROM forecast_capstone.factors";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Factors.class));
+    }
 
-        }
-        String sqlFrom = " FROM saleshistory, factors, skumaster";
+    public List<QueryResult> getPastSales(SearchParam query) {
+        String sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, sh_qty AS quantity";
+
+        String sqlFrom = " FROM forecast_capstone.saleshistory, forecast_capstone.factors, forecast_capstone.skumaster";
         String sqlWhere = " WHERE sh_factor_id = f_id AND sh_sku_id = sku_id";
         String sqlConditions = "";
         String sqlOrder = " ORDER BY sh_year, sh_week";
@@ -102,7 +106,7 @@ public class ForecastDao {
     }
 
     public List<QueryResult> getForecast(SearchParam searchParams, List<QueryResult> results) {
-        List<QueryResult> forecastResults = new ArrayList<QueryResult>();
+        List<QueryResult> forecastResults = new ArrayList<>();
         for (int i = 1; i <= 52; i++) {
             List<QueryResult> cacheList = new ArrayList<>();
             for (QueryResult result : results) {
@@ -113,20 +117,54 @@ public class ForecastDao {
 
             int averageQty = 0;
             if (cacheList.size() > 0) {
-                for (QueryResult weekResult : cacheList) {
-                    averageQty += weekResult.getQuantity();
+                // todo: Check for weeks 1-3 and add to 49
+                if (cacheList.size() == 1) {
+                    List<QueryResult> weekRangeResults = new ArrayList<>();
+                    for (QueryResult weekResult : results) {
+                        if (weekResult.getWeek() <= i + 3 && weekResult.getWeek() >= i - 3) {
+                            weekRangeResults.add(weekResult);
+                        }
+                    }
+                    for (QueryResult weekResult : weekRangeResults) {
+                        averageQty += weekResult.getQuantity();
+                    }
+                    QueryResult weekForecast = new QueryResult();
+                    weekForecast.setSku_id(cacheList.get(0).getSku_id());
+                    weekForecast.setDescription(cacheList.get(0).getDescription());
+                    weekForecast.setWeek(cacheList.get(0).getWeek());
+                    weekForecast.setYear(2018);
+                    weekForecast.setFactor(searchParams.getFactor());
+                    weekForecast.setQuantity(averageQty / weekRangeResults.size());
+                    forecastResults.add(weekForecast);
+                } else {
+                    for (QueryResult weekResult : cacheList) {
+                        averageQty += weekResult.getQuantity();
+                    }
+                    QueryResult weekForecast = new QueryResult();
+                    weekForecast.setSku_id(cacheList.get(0).getSku_id());
+                    weekForecast.setDescription(cacheList.get(0).getDescription());
+                    weekForecast.setWeek(cacheList.get(0).getWeek());
+                    weekForecast.setYear(2018);
+                    weekForecast.setFactor(searchParams.getFactor());
+                    weekForecast.setQuantity(averageQty / cacheList.size());
+                    forecastResults.add(weekForecast);
                 }
-
-                QueryResult weekForecast = new QueryResult();
-                weekForecast.setSku_id(cacheList.get(0).getSku_id());
-                weekForecast.setDescription(cacheList.get(0).getDescription());
-                weekForecast.setWeek(cacheList.get(0).getWeek());
-                weekForecast.setYear(2018);
-                weekForecast.setFactor(cacheList.get(0).getFactor());
-                weekForecast.setQuantity(averageQty / cacheList.size());
-                forecastResults.add(weekForecast);
             }
         }
         return forecastResults;
+    }
+
+    public List<FactorMultiplier> getFactorMultiplier(SearchParam query) {
+        String sql = "SELECT sf_sign, sf_percentvalue FROM forecast_capstone.salesfactor, forecast_capstone.saleshistory, forecast_capstone.factors WHERE sf_sh_id = sh_id AND sf_f_id = f_id ";
+        ArrayList<Object> arguments = new ArrayList<>();
+        if(query.getStr() != ""){
+            sql += " AND sh_str_id = ?";
+            arguments.add(query.getStr());
+        }
+        if(query.getFactor() != "") {
+            sql += " AND f_description = ?";
+            arguments.add(query.getFactor());
+        }
+        return jdbcTemplate.query(sql, arguments.toArray(), new BeanPropertyRowMapper<>(FactorMultiplier.class));
     }
 }

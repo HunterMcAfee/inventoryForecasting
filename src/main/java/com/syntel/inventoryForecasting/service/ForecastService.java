@@ -1,6 +1,8 @@
 package com.syntel.inventoryForecasting.service;
 
 import com.syntel.inventoryForecasting.dao.ForecastDao;
+import com.syntel.inventoryForecasting.model.FactorMultiplier;
+import com.syntel.inventoryForecasting.model.Factors;
 import com.syntel.inventoryForecasting.model.QueryResult;
 import com.syntel.inventoryForecasting.model.SearchParam;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,17 @@ public class ForecastService {
     @Autowired
     ForecastDao forecastDao;
 
+    public List<Factors> getFactors(){
+        return forecastDao.getFactors();
+    }
+
     public List<QueryResult> getPastSales(SearchParam query) {
 
-        List<QueryResult> results = forecastDao.getPastSales(query, false);
+        List<QueryResult> results = forecastDao.getPastSales(query);
         if(results.isEmpty()){ //if that years search did not work move back one more year
             query.setYearStart(query.getYearStart() - 1);
             query.setYearEnd(query.getYearEnd() - 1);
-            results = forecastDao.getPastSales(query, false);
+            results = forecastDao.getPastSales(query);
 //            if(results.isEmpty()){ //if the previous year had no info, range the weeks
 //                    boolean avgCall = false;
 //                    if(query.getWeekStart() == query.getWeekEnd() && query.getYearStart() == query.getYearEnd()){
@@ -51,5 +57,10 @@ public class ForecastService {
     }
 
     public List<QueryResult> getForecast(SearchParam searchParams, List<QueryResult> pastInfoResults) {
-        return forecastDao.getForecast(searchParams, pastInfoResults); }
+        return forecastDao.getForecast(searchParams, pastInfoResults);
+    }
+
+    public List<FactorMultiplier> getFactorMultiplier(SearchParam query) {
+        return forecastDao.getFactorMultiplier(query);
+    }
 }

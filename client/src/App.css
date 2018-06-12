@@ -59,11 +59,10 @@ width: 100% !important;
 }
 
 .newEntryList {
-  background-color: lightgrey;
+  background-color: #222;
   height: 220px;
-  width: 60%;
-/*  overflow: auto;
-*/
+  width: 80%;
+  border-radius: 8px;
   overflow-y: auto;
   overflow-x: hidden; 
   margin-left: auto;
@@ -83,3 +82,22 @@ width: 100% !important;
 .sideInput{
   text-align: center;
 }
+
+.modalStyle{
+  background-color: #fff;
+  border-radius: 5;
+  max-width: 500;
+  min-height: 300;
+  margin: 0 auto;
+  padding: 30;
+};
+
+.backdropStyle{
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: 'rgba(0,0,0,0.3)';
+  padding: 50;
+};
