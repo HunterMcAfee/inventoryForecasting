@@ -1,6 +1,29 @@
 import React, { Component } from 'react'
 
+        // fake white: rgb(229,229,229)
+    const modal_btn = {
+        background: 'rgb(229,229,229)',
+        color: 'rgb(35,35,35)',
+        border: '2px solid rgb(35,35,35)',
+        borderRadius: '4px'
+    }
+
+    const hover_modal_btn = {
+        background: 'rgb(35,35,35)',
+        color: 'rgb(229,229,229)',
+        border: '2px solid rgb(35,35,35)',
+        borderRadius: '4px'
+    }
+
 class Modal extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            hoverSubmit: modal_btn,
+            hoverCancel: modal_btn
+        }
+    }
 
     handleCloseModal(event){
         this.props.onClose(event);
@@ -8,6 +31,21 @@ class Modal extends Component{
 
     handleSubmit(event){
         this.props.onSubmit(event);
+    }
+
+    hoverOffEvent(This, whichButton){
+        // console.log("==============")
+//        This.setState({hoverSubmit: modal_btn});
+
+        (whichButton === 'submit') ?
+            this.setState({hoverSubmit: modal_btn}) :
+            this.setState({hoverCancel: modal_btn});
+    }
+    hoverEvent(This, whichButton){
+  //      This.setState({hoverSubmit: hover_modal_btn});
+        (whichButton === 'submit') ?
+            this.setState({hoverSubmit: hover_modal_btn}) :
+            this.setState({hoverCancel: hover_modal_btn});
     }
 
 
@@ -19,28 +57,33 @@ class Modal extends Component{
             left: 0,
             right: 0,
             backgroundColor: 'rgba(0,0,0,0.3)',
-            padding: 50
+            padding: 0
         };
 
         const modalStyle = {
-            backgroundColor: '#fff',
+            position: 'relative',
+            backgroundColor: 'rgb(229,229,229)',
             borderRadius: 5,
-            maxWidth: 500,
-            minHeight: 300,
-            margin: '0 auto',
-            padding: 30
+            maxWidth: '80%',
+            minHeight: '40%',
+            margin: '150px auto 0px',
+            padding: 0
           };
+
+        const buttonStyle = {
+            maxWidth: '80%',
+            margin: '0px auto 0px',
+        }
+
 
 
         if(!this.props.show){
             return null;
         }
 
-        let entryList = [];
-        // console.log(this.props.holdValue);
-        this.props.holdValue.forEach(element => {
-            entryList.push(
-                <tr key={element[0]}>
+        let entryList = this.props.holdValue.map((element, i) =>{
+            return ( 
+                <tr key={i}>
                     <td>{this.props.strNum}</td>
                     <td>{this.props.factor}</td>
                     <td>{this.props.week}</td>
@@ -48,32 +91,34 @@ class Modal extends Component{
                     <td>{element[0]}</td>
                     <td>{element[1]}</td>
                     <td>{element[2]}</td>
-                </tr>
-            );
+                </tr>                
+            )
         });
-
 
         return( 
             <div style={backdropStyle} >
-                <div style={modalStyle} className="forecastInfo">
-                    <table className="table">
+                <div style={modalStyle} className="searchInfo modalInfo">
+                    <table className="table modalTable">
                         <thead className="thead-dark">
                             <tr>
-                                <th>Store Number</th>
-                                <th>Factor</th>                        
-                                <th>Week</th>
-                                <th>Year</th>
-                                <th>SKU Number</th>
-                                <th>SKU Decription</th>
-                                <th>Sales Qty</th>                           
+                                <th scope="col">Store Number</th>
+                                <th scope="col">Factor</th>                        
+                                <th scope="col">Week</th>
+                                <th scope="col">Year</th>
+                                <th scope="col">SKU Number</th>
+                                <th scope="col">SKU Decription</th>
+                                <th scope="col">Sales Qty</th>                           
                             </tr>
                         </thead>
                         <tbody>
                             {entryList}
                         </tbody>
                     </table>
-                    <button onClick={(event)=>{this.handleSubmit(event)}} > Submit </button>
-                    <button onClick={(event)=>{this.handleCloseModal(event)}} > Cancel </button>
+
+                </div>
+                <div style={buttonStyle}>
+                        <button style={this.state.hoverSubmit} onMouseOut={()=>{this.hoverOffEvent(this, 'submit')}} onMouseOver={()=>{this.hoverEvent(this, 'submit')}} onClick={(event)=>{this.handleSubmit(event)}} > Submit </button>
+                        <button style={this.state.hoverCancel} onMouseOut={()=>{this.hoverOffEvent(this, 'cancel')}} onMouseOver={()=>{this.hoverEvent(this, 'cancel')}} onClick={(event)=>{this.handleCloseModal(event)}} > Cancel </button>
                 </div>
             </div>
         )
