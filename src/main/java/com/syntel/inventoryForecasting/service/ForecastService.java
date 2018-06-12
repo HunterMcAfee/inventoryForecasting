@@ -25,31 +25,32 @@ public class ForecastService {
             query.setYearStart(query.getYearStart() - 1);
             query.setYearEnd(query.getYearEnd() - 1);
             results = forecastDao.getPastSales(query);
-//            if(results.isEmpty()){ //if the previous year had no info, range the weeks
-//                    boolean avgCall = false;
-//                    if(query.getWeekStart() == query.getWeekEnd() && query.getYearStart() == query.getYearEnd()){
-//                        avgCall = true;
-//                    }
-//
-//                    query.setWeekStart(query.getWeekStart() - 3);
-//                    if(query.getWeekStart() < 1){
-//                        query.setWeekStart(52+query.getWeekStart());
-//                        query.setYearStart(query.getYearStart() - 1);
-//                    }
-//                    query.setYearStart(query.getWeekEnd() + 3);
-//                    if(query.getWeekEnd() > 52){
-//                        query.setWeekEnd(query.getWeekEnd() % 52);
-//                        query.setYearEnd(query.getYearEnd() + 1);
-//                    }
-//
-//                    if(avgCall){
-//                        results = forecastDao.getPastSales(query, true);
-//                    }
-//                    else{
-//                        results = forecastDao.getPastSales(query, false);
-//                    }
-//
-//            }
+            if(results.isEmpty()){ //if the previous year had no info, range the weeks
+                    boolean avgCall = false;
+                    if(query.getWeekStart() == query.getWeekEnd() && query.getYearStart() == query.getYearEnd()){ //only one week was looked up
+                        avgCall = true; //ill need to make a different call to the database
+                    }
+
+                    query.setWeekStart(query.getWeekStart() - 3);
+                    if(query.getWeekStart() < 1){
+                        query.setWeekStart(52+query.getWeekStart());
+                        query.setYearStart(query.getYearStart() - 1);
+                    }
+
+                    query.setYearStart(query.getWeekEnd() + 3);
+                    if(query.getWeekEnd() > 52){
+                        query.setWeekEnd(query.getWeekEnd() - 52);
+                        query.setYearEnd(query.getYearEnd() + 1);
+                    }
+
+                    if(avgCall){
+                        results = forecastDao.getPastSalesAvg(query);
+                    }
+                    else{
+                        results = forecastDao.getPastSales(query);
+                    }
+
+            }
         }
 
         return results;
