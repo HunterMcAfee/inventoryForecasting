@@ -99,38 +99,6 @@ public class ForecastDao {
         return jdbcTemplate.query(sql, arguments.toArray(), new BeanPropertyRowMapper<>(QueryResult.class));
     }
 
-    public List<QueryResult> getPastSalesAvg(SearchParam query){
-
-        ArrayList<Object> arguments = new ArrayList<>();
-        String sqlSelect = "SELECT sh_week AS week, sh_year AS year, f_description AS factor, sh_sku_id AS sku_id, sku_description AS description, AVG(sh_qty) AS quantity ";
-        String sqlFrom = " FROM forecast_capstone.saleshistory, forecast_capstone.factors, forecast_capstone.skumaster";
-        String sqlWhere = " WHERE sh_factor_id = f_id AND sh_sku_id = sku_id";
-        String sqlConditions = "";
-        String sqlGroupBy = "";
-
-        if(query.getType() != ""){
-            sqlFrom += ", strmaster";
-            sqlConditions += " AND sh_str_id = str_id AND str_type = ?";
-            arguments.add(query.getType());
-        }
-        if(query.getStr() != ""){
-            sqlConditions += " AND sh_str_id = ?";
-            arguments.add(query.getStr());
-        }
-        if(query.getSku() != ""){
-            sqlConditions += " AND sh_sku_id = ?";
-            arguments.add(query.getSku());
-        }
-
-        sqlConditions += " AND (sh_week >= ? AND sh_week <= ?) AND sh_year >= ?";
-        arguments.add(query.getWeekStart()); arguments.add(query.getWeekEnd()); arguments.add(query.getYearStart());
-
-
-
-        String sql = sqlSelect + sqlFrom + sqlWhere + sqlConditions + sqlGroupBy;
-        return jdbcTemplate.query(sql, arguments.toArray(), new BeanPropertyRowMapper<>(QueryResult.class));
-    }
-
     public List<QueryResult> getForecast(SearchParam searchParams, List<QueryResult> results) {
         List<QueryResult> forecastResults = new ArrayList<>();
         for (int i = 1; i <= 52; i++) {

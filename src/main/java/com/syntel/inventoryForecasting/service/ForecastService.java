@@ -44,13 +44,25 @@ public class ForecastService {
                         query.setYearEnd(query.getYearEnd() + 1);
                     }
 
-                    if(avgCall){
-                        results = forecastDao.getPastSalesAvg(query);
+                    results = forecastDao.getPastSales(query);
+                    if(results.isEmpty()){
+                        //check another store for information
+                        
                     }
-                    else{
-                        results = forecastDao.getPastSales(query);
-                    }
+                    else if(avgCall){
+                        int avg = 0;
+                        for(int i = 0; i < results.size(); i++){
+                            avg += results.get(i).getQuantity();
+                        }
 
+                        avg /= results.size();
+
+                        results.get(0).setQuantity(avg);
+
+                        while(results.size() > 1) {
+                            results.remove(results.size() - 1);
+                        }
+                    }
             }
         }
 
