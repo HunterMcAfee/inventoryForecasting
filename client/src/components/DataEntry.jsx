@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import TopOptions from './TopOptions'
+import Modal from './Modal'
 
 
 const borderError = {
@@ -33,7 +34,8 @@ export default class DataEntry extends Component {
       yearErr: borderNorm,
       skuData: [],
       factorOption: [],
-      strNumberData: []
+      strNumberData: [],
+      modalDisplay: false
     }
 
     this.addNewEntry = this.addNewEntry.bind(this);
@@ -107,10 +109,6 @@ export default class DataEntry extends Component {
     let tempEntryErr = this.state.entryErr;
 
     tempHoldEntryList[element][column] = event.target.value;
-    // if(event.target.value in this.state.skuData && column === 0){
-    //   tempEntryErr[element][column] = borderSuccess;
-    //   tempHoldEntryList[element][1] = this.state.skuData[event.target.value];
-    // }
 
     // CC891CBC
     if(column === 0 && event.target.value.length === 8){
@@ -129,8 +127,7 @@ export default class DataEntry extends Component {
       }
     } else if(column === 0 && event.target.length !== 8){ 
       tempEntryErr[element][column] = borderError;
-      tempHoldEntryList[element][1] = "";
-      
+      tempHoldEntryList[element][1] = "";      
     }
 
     this.setState({
@@ -176,6 +173,8 @@ export default class DataEntry extends Component {
   handleSubmit(event) {
     event.preventDefault();
     let anyErrors = false;
+
+
 
     // Convert Factor to Factor Id
     let factorId = -1;
@@ -254,6 +253,12 @@ export default class DataEntry extends Component {
       return;
     }
 
+    if(!this.state.modalDisplay){
+      this.setState({modalDisplay: true})
+      return;
+    }
+    this.setState({modalDisplay: false});
+
       // dataArray: this.state.holdValueEntryList
       const obj = {
       storeId: parseInt(this.state.storeNum, 10),
@@ -274,6 +279,14 @@ export default class DataEntry extends Component {
     .catch(function(error){
       if(!error.error);
     });
+  }
+
+  handleCloseModal(event){
+    this.setState({modalDisplay: false});
+  }
+  handleFinalSubmit(event){
+    console.log("The Final Submit");
+    this.setState({modalDisplay: false});
   }
 
   render() {
@@ -305,7 +318,7 @@ export default class DataEntry extends Component {
 
     return (
 
-      <div>
+      <div className="container">
 
         <h1 className="pageHeader"> Weekly Sales Report </h1>
         <br/>
@@ -342,7 +355,25 @@ export default class DataEntry extends Component {
       <br />
       <br />
       <br />
-      <button onClick={(e)=>{this.handleSubmit(e)}} type="button" id="addEntry" className="btn btn-success btn-lg btn-block submitEntry">Submit</button>
+
+      <Modal 
+        show={this.state.modalDisplay}
+        factor={this.state.factor}
+        strNum={this.state.storeNum}
+        week={this.state.week}
+        year={this.state.year}
+        holdValue={this.state.holdValueEntryList}
+        onClose={(event)=>{this.handleCloseModal(event)}}
+        onSubmit={(event)=>{this.handleFinalSubmit(event)}}
+      />
+      {/* <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" display={this.state.modalDisplay} aria-labelledby="myLargeModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            ...
+          </div>
+        </div>
+      </div> */}
+      <button onClick={(e)=>{this.handleSubmit(e)}} type="button" id="addEntry" data-toggle="modal" target=".bs-example-modal.lg" className="btn btn-success btn-lg btn-block submitEntry">Submit</button>
       </div>
     )
   }
