@@ -6,7 +6,7 @@ class Modal extends Component{
         this.props.onClose(event);
     }
 
-    handleFinalSubmit(event){
+    handleSubmit(event){
         this.props.onSubmit(event);
     }
 
@@ -37,7 +37,7 @@ class Modal extends Component{
         }
 
         let entryList = [];
-        console.log(this.props.holdValue);
+        // console.log(this.props.holdValue);
         this.props.holdValue.forEach(element => {
             entryList.push(
                 <tr key={element[0]}>
@@ -55,9 +55,9 @@ class Modal extends Component{
 
         return( 
             <div style={backdropStyle} >
-                <div style={modalStyle} >
-                    <table >
-                        <thead>
+                <div style={modalStyle} className="forecastInfo">
+                    <table className="table">
+                        <thead className="thead-dark">
                             <tr>
                                 <th>Store Number</th>
                                 <th>Factor</th>                        
@@ -72,7 +72,7 @@ class Modal extends Component{
                             {entryList}
                         </tbody>
                     </table>
-                    <button onClick={(event)=>{this.handleFinalSubmit(event)}} > Submit </button>
+                    <button onClick={(event)=>{this.handleSubmit(event)}} > Submit </button>
                     <button onClick={(event)=>{this.handleCloseModal(event)}} > Cancel </button>
                 </div>
             </div>

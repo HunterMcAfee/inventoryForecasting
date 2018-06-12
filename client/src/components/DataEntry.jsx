@@ -271,7 +271,7 @@ export default class DataEntry extends Component {
 
     axios.post("http://localhost:8080/dataEntry", obj)
     .then((res) => {
-      // console.log(res.data);
+      console.log(res.data);
       // this.setState({
       //     pastInfo: res.data
       // })
@@ -364,7 +364,7 @@ export default class DataEntry extends Component {
         year={this.state.year}
         holdValue={this.state.holdValueEntryList}
         onClose={(event)=>{this.handleCloseModal(event)}}
-        onSubmit={(event)=>{this.handleFinalSubmit(event)}}
+        onSubmit={(event)=>{this.handleSubmit(event)}}
       />
       {/* <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" display={this.state.modalDisplay} aria-labelledby="myLargeModalLabel">
         <div class="modal-dialog modal-lg" role="document">
