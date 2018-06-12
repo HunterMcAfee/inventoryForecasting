@@ -184,12 +184,6 @@ public class ForecastDao {
 
             if (cacheList.size() > 1) {
                 int averageQty = 0;
-                List<QueryResult> weekRangeResults = new ArrayList<>();
-//                    for (QueryResult weekResult : results) {
-//                        if (weekResult.getWeek() <= i + 3 && weekResult.getWeek() >= i - 3) {
-//                            weekRangeResults.add(weekResult);
-//                        }
-//                    }
                 for (QueryResult weekResult : cacheList) {
                     averageQty += weekResult.getQuantity();
                 }
