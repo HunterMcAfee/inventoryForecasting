@@ -1,9 +1,6 @@
 package com.syntel.inventoryForecasting.controller;
 
-import com.syntel.inventoryForecasting.model.Factors;
-import com.syntel.inventoryForecasting.model.ForecastPayload;
-import com.syntel.inventoryForecasting.model.QueryResult;
-import com.syntel.inventoryForecasting.model.SearchParam;
+import com.syntel.inventoryForecasting.model.*;
 import com.syntel.inventoryForecasting.service.ForecastService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,12 +27,12 @@ public class ForecastController {
     @CrossOrigin
     @PostMapping("/forecast")
     public List<QueryResult> getForecast(@RequestBody ForecastPayload forecastPayload) {
-//        System.out.println(forecastPayload.getPastInfoResults().get(0).getFactor());
-//        System.out.println(forecastPayload.getPastInfoResults().get(0).getSku_id());
-//        System.out.println(forecastPayload.getPastInfoResults().get(0).getDescription());
-//        System.out.println(forecastPayload.getPastInfoResults().get(0).getQuantity());
-//        System.out.println(forecastPayload.getPastInfoResults().get(0).getWeek());
-//        System.out.println(forecastPayload.getPastInfoResults().get(0).getYear());
         return forecastService.getForecast(forecastPayload.getSearchParams(), forecastPayload.getPastInfoResults());
+    }
+
+    @CrossOrigin
+    @PostMapping("/factorMultiplier")
+    public List<FactorMultiplier> getFactorMultiplier(@RequestBody SearchParam query) {
+        return forecastService.getFactorMultiplier(query);
     }
 }
