@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import TopOptions from './TopOptions'
 import Modal from './Modal'
+import AlertUser from './AlertUser'
 
 
 const borderError = {
@@ -35,7 +36,8 @@ export default class DataEntry extends Component {
       skuData: [],
       factorOption: [],
       strNumberData: [],
-      modalDisplay: false
+      modalDisplay: false,
+      alert: false
     }
 
     this.addNewEntry = this.addNewEntry.bind(this);
@@ -225,16 +227,19 @@ export default class DataEntry extends Component {
       this.setState({strErr: borderError})
       anyErrors = true;
     }
-    // 
+
+    // Check if the Sku entries are valid
     let skuDataList = [];
     let soldQuantity = [];
     for(let i=0; i<this.state.holdValueEntryList.length; i++){
       for(let j=0; j<3; j++){
         if(j !== 1){
           if(this.state.holdValueEntryList[i][j].length === 8 || (j > 0 && this.state.holdValueEntryList[i][j] !=="")){
+            if(this.state.holdValueEntryList[i][j].length === 8){
+              skuDataList.push(this.state.holdValueEntryList[i][0]);
+              soldQuantity.push(parseInt(this.state.holdValueEntryList[i][2],10))
+            }
             let tempEntryErr = this.state.entryErr;
-            skuDataList.push(this.state.holdValueEntryList[i][0]);
-            soldQuantity.push(parseInt(this.state.holdValueEntryList[i][2],10))
             tempEntryErr[i][j] = borderSuccess
             this.setState({entryErr: tempEntryErr});
           } else {
@@ -247,9 +252,9 @@ export default class DataEntry extends Component {
       } 
     }    
 
-
     if(anyErrors){
       console.log("There was an user Error");
+      this.setState({alert: 'failed'});
       return;
     }
 
@@ -269,25 +274,46 @@ export default class DataEntry extends Component {
       soldQuantuty: soldQuantity
       }
 
+    this.successfulSubmit(obj);
+  }
+
+  successfulSubmit = (obj) => {
+    console.log(obj);
+    let success = true;
+
     axios.post("http://localhost:8080/dataEntry", obj)
     .then((res) => {
       console.log(res.data);
-      // this.setState({
-      //     pastInfo: res.data
-      // })
     })
     .catch(function(error){
       if(!error.error);
     });
+
+    /*** Submit successfully enteried entries into the database ***/
+    /*** Clear all the Entries ***/
+    if(success){
+      this.setState({
+        newEntry: [0],
+        holdValueEntryList: [["", "", ""]],
+        currentRow: 1,
+        storeNum: "",
+        factor: "",
+        week: "",
+        year: "",
+        entryErr: [[borderNorm, borderNorm, borderNorm]],
+        strErr: borderNorm,
+        factorErr: borderNorm,
+        weekErr: borderNorm,
+        yearErr: borderNorm,
+        alert: 'success'
+      });
+    }
   }
 
   handleCloseModal(event){
     this.setState({modalDisplay: false});
   }
-  handleFinalSubmit(event){
-    console.log("The Final Submit");
-    this.setState({modalDisplay: false});
-  }
+
 
   render() {
 
@@ -319,6 +345,13 @@ export default class DataEntry extends Component {
     return (
 
       <div className="container">
+
+        <AlertUser 
+          show={this.state.alert}
+        />
+        {/* <div class="alert alert-success">
+          <strong>Success!</strong> Weekly Sales Report has been submitted!
+        </div> */}
 
         <h1 className="pageHeader"> Weekly Sales Report </h1>
         <br/>

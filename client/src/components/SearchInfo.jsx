@@ -17,7 +17,7 @@ export default class SearchInfo extends Component {
 					      <td>{item.factor}</td>
 					      <td>{item.sku_id}</td>
 					      <td>{item.description}</td>
-					      <td>{item.quantity}</td>
+					      <td>{Math.floor(item.quantity * (this.props.factorMultiplier ? Math.abs(this.props.factorMultiplier) : 1))}</td>
 			    	</tr>)
 		})
 

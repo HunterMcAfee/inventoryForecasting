@@ -37,6 +37,10 @@ h2{
 	/*white-space: nowrap;*/
 }
 
+.modalTable{
+	width: 100%;
+}
+
 .thead-dark{
 	background-color: rgb(35,35,35);
 	color: rgb(229,229,229);
