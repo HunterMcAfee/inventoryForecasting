@@ -118,21 +118,21 @@ export default class Forecast extends Component {
 
         axios.post('http://localhost:8080/factorMultiplier', searchParams)
             .then((res) => {
-                let multiplierData = res.data;
-                console.log(multiplierData);
-                let factorMultiplier = 0;
-                multiplierData.map((multiplier) => {
-                    if (multiplier.sf_sign == true) {
-                        factorMultiplier + multiplier.sf_percentage;
-                    } else if (multiplier.sign == false) {
-                        factorMultiplier - multiplier.sf_sign;
-                    } 
-                })
-                factorMultiplier = ((factorMultiplier / res.data.length) / 100);
-                console.log(factorMultiplier);
-                this.setState({
-                    factorMultiplier: factorMultiplier
-                })
+                if (res.data.length > 0) {
+                    let multiplierData = res.data;
+                    let factorMultiplier = 0;
+                    multiplierData.forEach((multiplier) => {
+                        if (multiplier.sf_sign === true) {
+                            factorMultiplier += multiplier.sf_percentvalue;
+                        } else if (multiplier.sf_sign === false) {
+                            factorMultiplier -= multiplier.sf_percentvalue;
+                        }
+                    })
+                    factorMultiplier = ((factorMultiplier / res.data.length) / 100);
+                    this.setState({
+                        factorMultiplier: factorMultiplier
+                    })
+                }
             })
             .catch((error) => {
                 console.log(error);
