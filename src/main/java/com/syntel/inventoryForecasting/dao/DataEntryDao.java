@@ -25,7 +25,6 @@ public class DataEntryDao {
     private String avgQtyByFactor = "SELECT round(AVG(sh_qty)) AS avg_qty from forecast_capstone.saleshistory where sh_factor_id = ? and sh_str_id = ? and sh_sku_id = ?";
     private String storeFactorData = "INSERT into forecast_capstone.salesfactor (sf_sh_id, sf_f_id, sf_sign, sf_percentvalue) values (?,?,?,?)";
 
-
     public String storeDataEntry(DataEntry dataEntry) {
         System.out.println(dataEntry.getStoreId());
         System.out.println(dataEntry.getFactorId());
@@ -56,7 +55,12 @@ public class DataEntryDao {
 //            aveQuantityNormalDay = jdbcTemplate.query("SELECT round(AVG(sh_qty)) AS avg_qty from forecast_capstone.saleshistory where saleshistory.sh_factor_id = " + 0 + " and saleshistory.sh_str_id = " + stoteId, new BeanPropertyRowMapper<>(QueryReturnQty.class));
           //  aveQuantityNormalDay = jdbcTemplate.query(avgQtyByFactor, )
 //            aveQuantityByFactor = jdbcTemplate.query(avgQtyByFactor + dataEntry.getFactorId() + " and sh_sku_id = " + skuStr, new BeanPropertyRowMapper<>(QueryReturnQty.class));
-            listOfAveQtyNormalDay[index] = aveQuantityNormalDay.get(0).getAvg_qty();
+            System.out.println(aveQuantityNormalDay.get(0).getAvg_qty());
+            if(aveQuantityNormalDay.get(0).getAvg_qty() == null) {
+                listOfAveQtyNormalDay[index] = 0;
+            } else {
+                listOfAveQtyNormalDay[index] = aveQuantityNormalDay.get(0).getAvg_qty();
+            }
             index++;
         }
         for(int i = 0; i < skuArr.length; i++) {
@@ -71,11 +75,27 @@ public class DataEntryDao {
 //        int avgQtyByFactor = aveQuantityByFactor.get(0).getAvg_qty();
 //        System.out.println(avgQtyByFactor);
         int [] primarykeyOfsalesfactor = new int[skuArr.length];
+        List<QueryReturnQty> listOfPK_ExistingSFRow = null;
+
         for(int i = 0; i < skuArr.length; i++) {
-            jdbcTemplate.update(storeData, dataEntry.getStoreId(), dataEntry.getWeek(), dataEntry.getYear(), quantityArr[i],
-                    skuArr[i], dataEntry.getFactorId());
-            listOfPKSalesFactor = jdbcTemplate.query("select max(sh_id) AS avg_qty from forecast_capstone.saleshistory", new BeanPropertyRowMapper<>(QueryReturnQty.class));
-            primarykeyOfsalesfactor[i] = listOfPKSalesFactor.get(0).getAvg_qty();
+
+            listOfPK_ExistingSFRow = jdbcTemplate.query("SELECT saleshistory.sh_id AS avg_qty from forecast_capstone.saleshistory where saleshistory.sh_str_id = " + dataEntry.getStoreId() + " and saleshistory.sh_week = " + dataEntry.getWeek() + " and saleshistory.sh_year = " + dataEntry.getYear() + " and saleshistory.sh_sku_id LIKE '%" + skuArr[i] + "%'", new BeanPropertyRowMapper<>(QueryReturnQty.class));
+            if(listOfPK_ExistingSFRow.isEmpty()) {
+                System.out.println("ITS NULL");
+            }
+            if (!listOfPK_ExistingSFRow.isEmpty()) {
+                System.out.println(listOfPK_ExistingSFRow.get(0).getAvg_qty());
+                jdbcTemplate.update("UPDATE forecast_capstone.saleshistory SET sh_qty = " + quantityArr[i] + ", sh_factor_id = " +  dataEntry.getFactorId() + " WHERE sh_id = " + listOfPK_ExistingSFRow.get(0).getAvg_qty());
+                System.out.println("ERROR is here");
+                System.out.println("ERROR is here");
+                primarykeyOfsalesfactor[i] = listOfPK_ExistingSFRow.get(0).getAvg_qty();
+            } else {
+                jdbcTemplate.update(storeData, dataEntry.getStoreId(), dataEntry.getWeek(), dataEntry.getYear(), quantityArr[i],
+                        skuArr[i], dataEntry.getFactorId());
+                listOfPKSalesFactor = jdbcTemplate.query("select max(sh_id) AS avg_qty from forecast_capstone.saleshistory", new BeanPropertyRowMapper<>(QueryReturnQty.class));
+                primarykeyOfsalesfactor[i] = listOfPKSalesFactor.get(0).getAvg_qty();
+                System.out.println("ERRRRRRRR");
+            }
             System.out.println("12345");
         }
 
@@ -84,6 +104,7 @@ public class DataEntryDao {
         }
         int percentage = 0;
         int sign = 0;
+        List<QueryReturnQty> listOfPrimaryKeySF = null;
 
         for(int i = 0; i < skuArr.length; i++) {
             System.out.println("+++++++++++++");
@@ -105,7 +126,17 @@ public class DataEntryDao {
             }
             System.out.println("Percentage: " + percentage + " sign " + sign);
             System.out.println(primarykeyOfsalesfactor[i]);
-            jdbcTemplate.update(storeFactorData, primarykeyOfsalesfactor[i], dataEntry.getFactorId(), sign, percentage);
+
+            listOfPrimaryKeySF = jdbcTemplate.query("SELECT salesfactor.sf_id AS avg_qty from forecast_capstone.salesfactor where salesfactor.sf_sh_id = " + primarykeyOfsalesfactor[i], new BeanPropertyRowMapper<>(QueryReturnQty.class));
+
+            if(!listOfPrimaryKeySF.isEmpty()) {
+                System.out.println(listOfPrimaryKeySF.get(0).getAvg_qty());
+                jdbcTemplate.update("UPDATE forecast_capstone.salesfactor SET sf_f_id = " +  dataEntry.getFactorId() + ", sf_sign = " + sign + ", sf_percentvalue = " + percentage + " WHERE sf_id = " + listOfPrimaryKeySF.get(0).getAvg_qty());
+                System.out.println("UPDATED row in salesfactor");
+            } else {
+                jdbcTemplate.update(storeFactorData, primarykeyOfsalesfactor[i], dataEntry.getFactorId(), sign, percentage);
+                System.out.println("Inserted row in sales factor");
+            }
         }
 
         return "Mayur Maisuria Syntel";
