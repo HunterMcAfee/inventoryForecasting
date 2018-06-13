@@ -3,9 +3,9 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 body {
-  margin: 0;
-  padding: 0;
   font-family: sans-serif;
+  background-color: #EFF6EE;
+  padding-top: 70px;
 }
 
 h1{
@@ -26,13 +26,24 @@ h2{
 	width: 100%;
 }
 
+.searchBox {
+	border-radius: 2px;
+	background-color: white;
+	border-bottom: 5px;
+	border-top: 5px;
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
 .searchInfo {
-	border: solid 2px rgb(35,35,35);
+	/* border: solid 2px rgb(35,35,35); */
+	box-shadow: 2px 2px 5px grey;
 	border-radius: 2px;
 	margin-left: 2.5%;
 	margin-right: 2.5%;
 	overflow-y: scroll;
 	height: 35vh;
+	background-color: white;
 	/*overflow-x: scroll;*/
 	/*white-space: nowrap;*/
 }
@@ -41,8 +52,56 @@ h2{
 	width: 100%;
 }
 
+.chart {
+	margin-top: 30px;
+	border-radius: 2px;
+	box-shadow: 2px 2px 3px grey;
+}
+
+.infoName {
+	background-color: #2B4141;
+	box-shadow: 2px 2px 3px grey;
+	color: white;
+	display: inline-block;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	border-radius: 2px;
+}
+
+.btn-submit {
+	background-color: #2B4141;
+	border-color: #2B4141;
+	color: white;
+}
+
+.btn-submit:hover {
+	background-color: white;
+	border-color: #2B4141;
+	color: #2B4141;
+}
+
+.navbar {
+	border: none;
+	background-color: #2B4141;
+	color: #EFF6EE !important;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	box-shadow: 0px 1px 1px grey;
+}
+
+.navbar-default .navbar-brand {
+	color: #EFF6EE;
+	font-weight: bolder;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #EFF6EE;
+}
+
 .thead-dark{
-	background-color: rgb(35,35,35);
+	background-color: #C12424;
 	color: rgb(229,229,229);
 }
 
@@ -53,7 +112,7 @@ h2{
 }
 
 .weekCard{
-	border: solid 2px black;
+	border: solid 2px grey;
 	border-radius: 5px;
 	box-shadow: 5px 10px;
 	margin-left: 1%;
@@ -67,10 +126,16 @@ h2{
 	border-radius: 0px;
 }
 
+.headerSearch {
+	box-shadow: 2px 2px 5px grey;
+}
+
 .pageHeader {
-	background-color: rgb(35,35,35);
+	background-color: #C12424;
 	color: white;
-	border-radius: 5px;
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
 	padding-top: 10px;
 	padding-bottom: 10px;
+	margin-bottom: 0px;
 }

@@ -143,9 +143,9 @@ export default class Forecast extends Component {
             .catch((error) => {
                 console.log(error);
             })
-            this.setState({
-                show: true
-            })
+        this.setState({
+            show: true
+        })
     }
 
     requestForecast = (searchParams) => {
@@ -194,85 +194,88 @@ export default class Forecast extends Component {
     render() {
         return (
             <div className="forecastPage">
-                <h1 className="pageHeader">Forecast</h1>
-                <br />
-                <form className="searchBox row" onSubmit={this.handleSubmit}>
-                    <div className="col1 col-sm-12 col-lg-2 col-lg-offset-1">
-                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Store Number" id="str" />
-                        <br />
-                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="SKU" id="sku" />
-                    </div>
-                    <div className="col2 col-sm-12 col-lg-2 ">
-                        {/*Store Type*/}
-                        <div className="dropdown">
-                            <button className="btn btn-default dropdown-toggle typeStore" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {`${this.state.strType} `}
-                                <span className="caret"></span>
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenu">
-                                <li className="pointer" onClick={() => { this.changeTypeText('A') }}>A</li>
-                                <li className="pointer" onClick={() => { this.changeTypeText('B') }}>B</li>
-                                <li className="pointer" onClick={() => { this.changeTypeText('C') }}>C</li>
-                                <li className="pointer" onClick={() => { this.changeTypeText('D') }}>D</li>
-                                <li className="pointer" onClick={() => { this.changeTypeText('E') }}>E</li>
-                                <li className="pointer" onClick={() => { this.changeTypeText('F') }}>F</li>
-                            </ul>
-                        </div>
-                        <br />
-                        {/*Factors*/}
-                        <div className="dropdown">
-                            <button className="btn btn-default dropdown-toggle factorDrop" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {this.state.factorTxt} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div className="headerSearch">
+                    <h1 className="pageHeader">Forecast</h1>
+                    <div className="searchBox">
+                        <form className="row" onSubmit={this.handleSubmit}>
+                            <div className="col1 col-sm-12 col-lg-2 col-lg-offset-1">
+                                <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Store Number" id="str" />
+                                <br />
+                                <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="SKU" id="sku" />
+                            </div>
+                            <div className="col2 col-sm-12 col-lg-2 ">
+                                {/*Store Type*/}
+                                <div className="dropdown">
+                                    <button className="btn btn-default dropdown-toggle typeStore" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        {`${this.state.strType} `}
+                                        <span className="caret"></span>
+                                    </button>
+                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenu">
+                                        <li className="pointer" onClick={() => { this.changeTypeText('A') }}>A</li>
+                                        <li className="pointer" onClick={() => { this.changeTypeText('B') }}>B</li>
+                                        <li className="pointer" onClick={() => { this.changeTypeText('C') }}>C</li>
+                                        <li className="pointer" onClick={() => { this.changeTypeText('D') }}>D</li>
+                                        <li className="pointer" onClick={() => { this.changeTypeText('E') }}>E</li>
+                                        <li className="pointer" onClick={() => { this.changeTypeText('F') }}>F</li>
+                                    </ul>
+                                </div>
+                                <br />
+                                {/*Factors*/}
+                                <div className="dropdown">
+                                    <button className="btn btn-default dropdown-toggle factorDrop" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        {this.state.factorTxt} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <span className="caret"></span>
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                {/* List all factors in our current factor arr in state */}
-                                {this.state.factors.map((factor, i) => {
-                                    return (
-                                        <li className="pointer" value={factor.f_description} onClick={(event) => { this.changeFactorText(event) }} key={i}>{factor.f_description}</li>
-                                    )
-                                })}
-                            </ul>
-                        </div>
+                                    </button>
+                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                        {/* List all factors in our current factor arr in state */}
+                                        {this.state.factors.map((factor, i) => {
+                                            return (
+                                                <li className="pointer" value={factor.f_description} onClick={(event) => { this.changeFactorText(event) }} key={i}>{factor.f_description}</li>
+                                            )
+                                        })}
+                                    </ul>
+                                </div>
+                            </div>
+                            {/*Week Start Date*/}
+                            <div className="col3 col-sm-12 col-lg-2">
+                                <div className="dropdown">
+                                    <button className="btn btn-default dropdown-toggle dropWeek" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        {this.state.weekStr}
+                                        <span className="caret"></span>
+                                    </button>
+                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenu3">
+                                        <WeekdropdownStr changeWeekStart={this.changeWeekStart} />
+                                    </ul>
+                                </div>
+                                <br />
+                                <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearStart" />
+                            </div>
+                            {/*Week End Date */}
+                            <div className="col3 col-sm-12 col-lg-2">
+                                <div className="dropdown">
+                                    <button className="btn btn-default dropdown-toggle dropWeek" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        {this.state.weekEd}
+                                        <span className="caret"></span>
+                                    </button>
+                                    <ul className="dropdown-menu" aria-labelledby="dropdownMenu4">
+                                        <WeekdropdownEnd changeWeekEnd={this.changeWeekEnd} />
+                                    </ul>
+                                </div>
+                                <br />
+                                <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearEnd" />
+                            </div>
+                            <br />
+                            <div className="col4 col-sm-12 col-lg-2 ">
+                                <button className="btn btn-submit" type="submit"> Submit </button>
+                            </div>
+                        </form>
                     </div>
-                    {/*Week Start Date*/}
-                    <div className="col3 col-sm-12 col-lg-2">
-                        <div className="dropdown">
-                            <button className="btn btn-default dropdown-toggle dropWeek" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {this.state.weekStr}
-                                <span className="caret"></span>
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenu3">
-                                <WeekdropdownStr changeWeekStart={this.changeWeekStart} />
-                            </ul>
-                        </div>
-                        <br />
-                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearStart" />
-                    </div>
-                    {/*Week End Date */}
-                    <div className="col3 col-sm-12 col-lg-2">
-                        <div className="dropdown">
-                            <button className="btn btn-default dropdown-toggle dropWeek" type="button" id="dropdownMenu4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                {this.state.weekEd}
-                                <span className="caret"></span>
-                            </button>
-                            <ul className="dropdown-menu" aria-labelledby="dropdownMenu4">
-                                <WeekdropdownEnd changeWeekEnd={this.changeWeekEnd} />
-                            </ul>
-                        </div>
-                        <br />
-                        <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearEnd" />
-                    </div>
-                    <br />
-                    <div className="col4 col-sm-12 col-lg-2 ">
-                        <button className="btn btn-primary" type="submit"> Submit </button>
-                    </div>
-                </form>
-                <h2>Forecast: </h2>
+                </div>
+                <h2 className="infoName">Forecast </h2>
                 <SearchInfo searchInfo={this.state.forecastInfo} factorMultiplier={this.state.factorMultiplier} />
-                <h2>Past Sales: </h2>
+                <h2 className="infoName">Past Sales </h2>
                 <SearchInfo searchInfo={this.state.pastInfo} />
-                <ForecastChart show={this.state.show} pastInfo={this.state.pastInfo} forecastInfo ={this.state.forecastInfo} multiplier = {this.state.factorMultiplier}/>
+                <ForecastChart show={this.state.show} pastInfo={this.state.pastInfo} forecastInfo={this.state.forecastInfo} multiplier={this.state.factorMultiplier} />
                 <br />
                 <br />
             </div>
