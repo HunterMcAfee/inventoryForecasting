@@ -1,19 +1,18 @@
 import React, { Component } from 'react'
 
-        // fake white: rgb(229,229,229)
-    const modal_btn = {
-        background: 'rgb(229,229,229)',
-        color: 'rgb(35,35,35)',
-        border: '2px solid rgb(35,35,35)',
-        borderRadius: '4px'
-    }
+const modal_btn = {
+    background: 'rgb(229,229,229)',
+    color: 'rgb(35,35,35)',
+    border: '2px solid rgb(35,35,35)',
+    borderRadius: '4px'
+}
 
-    const hover_modal_btn = {
-        background: 'rgb(35,35,35)',
-        color: 'rgb(229,229,229)',
-        border: '2px solid rgb(35,35,35)',
-        borderRadius: '4px'
-    }
+const hover_modal_btn = {
+    background: 'rgb(35,35,35)',
+    color: 'rgb(229,229,229)',
+    border: '2px solid rgb(35,35,35)',
+    borderRadius: '4px'
+}
 
 class Modal extends Component{
     constructor(props){
@@ -33,16 +32,12 @@ class Modal extends Component{
         this.props.onSubmit(event);
     }
 
-    hoverOffEvent(This, whichButton){
-        // console.log("==============")
-//        This.setState({hoverSubmit: modal_btn});
-
+    hoverOffEvent(whichButton){
         (whichButton === 'submit') ?
             this.setState({hoverSubmit: modal_btn}) :
             this.setState({hoverCancel: modal_btn});
     }
-    hoverEvent(This, whichButton){
-  //      This.setState({hoverSubmit: hover_modal_btn});
+    hoverEvent(whichButton){
         (whichButton === 'submit') ?
             this.setState({hoverSubmit: hover_modal_btn}) :
             this.setState({hoverCancel: hover_modal_btn});
@@ -81,6 +76,7 @@ class Modal extends Component{
             return null;
         }
 
+
         let entryList = this.props.holdValue.map((element, i) =>{
             return ( 
                 <tr key={i}>
@@ -99,6 +95,7 @@ class Modal extends Component{
             <div style={backdropStyle} >
                 <div style={modalStyle} className="searchInfo modalInfo">
                     <table className="table modalTable">
+                        {/***  HEADER of Modal Table  ***/}
                         <thead className="thead-dark">
                             <tr>
                                 <th scope="col">Store Number</th>
@@ -110,6 +107,7 @@ class Modal extends Component{
                                 <th scope="col">Sales Qty</th>                           
                             </tr>
                         </thead>
+                        {/***  BODY of Modal Table  ***/}
                         <tbody>
                             {entryList}
                         </tbody>
