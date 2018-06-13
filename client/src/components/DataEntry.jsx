@@ -5,18 +5,11 @@ import Modal from './Modal'
 import AlertUser from './AlertUser'
 
 
-const borderError = {
-  boxShadow: "1px 1px 10px 1px red"
-}
-const borderNorm = {
-  border: '1px solid grey'
-}
-const borderSuccess = {
-  boxShadow: "1px 1px 10px 1px green"
-  
-}
-export default class DataEntry extends Component {
+const borderError = { boxShadow: "1px 1px 10px 1px red" }
+const borderNorm = { border: '1px solid grey' }
+const borderSuccess = { boxShadow: "1px 1px 10px 1px green" }
 
+export default class DataEntry extends Component {
   constructor(props) {
     super(props);
 
@@ -46,47 +39,16 @@ export default class DataEntry extends Component {
   componentDidMount(){
 
     axios.post("http://35.237.25:8081/factorData")
-    .then((res) => {
-      this.setState({
-          factorOption: res.data
-      })
-    })
-    .catch(function(error){
-      if(!error.error);
-    });
+    .then((res) => {  this.setState({factorOption: res.data}); })
+    .catch(function(error){ if(!error.error); });
 
     axios.post("http://35.237.25:8081/skuMasterData")
-    .then((res) => {
-      this.setState({
-          skuData: res.data
-      })
-    })
-    .catch(function(error){
-      if(!error.error);
-    });
+    .then((res) => {  this.setState({skuData: res.data})  })
+    .catch(function(error){ if(!error.error); });
 
     axios.post("http://35.237.25:8081/strMasterData")
-    .then((res) => {
-      this.setState({
-          strNumberData: res.data
-      })
-    })
-    .catch(function(error){
-      if(!error.error);
-    });
-    // this.setState({
-    //   skuData: {
-    //     '11111111': 'hammer',
-    //     '22222222': "wood",
-    //     '33333333': 'saws',
-    //     '44444444': 'bucket',
-    //     '55555555': 'nails',
-    //     '66666666': 'screws',
-    //     '77777777': 'shovel',
-    //     '88888888': 'rake',
-    //     '99999999': 'lawn mower'
-    //   }
-    // })
+    .then((res) => {  this.setState({strNumberData: res.data})  })
+    .catch(function(error){ if(!error.error); });
   }
 
   addNewEntry(event) {
@@ -161,9 +123,9 @@ export default class DataEntry extends Component {
     tempHoldValueEntryList.splice(event, 1);
     tempEntryErr.splice(event, 1);
 
-     for(let i = event; i < this.state.newEntry.length; i++) {
-        tempNewEntry[i] = i;
-     }
+    for(let i = event; i < this.state.newEntry.length; i++) {
+       tempNewEntry[i] = i;
+    }
     this.setState({
        newEntry: tempNewEntry,
        currentRow: this.state.currentRow - 1,
@@ -176,8 +138,6 @@ export default class DataEntry extends Component {
     event.preventDefault();
     let anyErrors = false;
 
-
-
     // Convert Factor to Factor Id
     let factorId = -1;
     for(let i=0; i < this.state.factorOption.length; i++){
@@ -186,37 +146,33 @@ export default class DataEntry extends Component {
       }
     }
 
-    if(factorId === -1){
-      this.setState({factorErr: borderError
-      });
-      anyErrors = true;
-    } else {
-      this.setState({factorErr: borderSuccess})
-    }
+    // If Factor Input is Valid
+    (factorId === -1) ? (
+        this.setState({factorErr: borderError}),
+        anyErrors = true) : 
+        this.setState({factorErr: borderSuccess});
+    
 
     // Convert Week to week id
     let splitedWeek = this.state.week.split(" ");
-    if(splitedWeek[1] > 0 && splitedWeek[1] <= 52){
-      this.setState({weekErr: borderSuccess})
-    } else {
-      this.setState({weekErr: borderError})
-      anyErrors = true;
-    }
+    (splitedWeek[1] > 0 && splitedWeek[1] <= 52) ?
+        this.setState({weekErr: borderSuccess}) : (
+        this.setState({weekErr: borderError}),
+        anyErrors = true
+      );
+    
 
-    // Check Year
+    // Check Year is Valid
     let intYear = parseInt(this.state.year, 10);
-    if(intYear >= 1000 && intYear <= 9999){
-      this.setState({yearErr: borderSuccess})
-    }
-    else{
-      this.setState({yearErr: borderError})
-      anyErrors = true;
-    }
+    (intYear >= 1000 && intYear <= 9999) ?
+        this.setState({yearErr: borderSuccess}) :
+        (this.setState({yearErr: borderError}),
+        anyErrors = true);
+    
 
     // Check Str Number
     let foundStrMatch = false;
     for(let i = 0; i < this.state.strNumberData.length; i++){
-      // console.log(this.state.strNumberData[i].str_id)
       if(parseInt(this.state.storeNum,10) === this.state.strNumberData[i].str_id){
         foundStrMatch = true;
         this.setState({strErr: borderSuccess})
@@ -264,15 +220,15 @@ export default class DataEntry extends Component {
     }
     this.setState({modalDisplay: false});
 
-      // dataArray: this.state.holdValueEntryList
-      const obj = {
+    /*  Obj to send to Backend  */
+    const obj = {
       storeId: parseInt(this.state.storeNum, 10),
       factorId: factorId,
       week: parseInt(splitedWeek[1], 10),
       year: intYear,
       skuNum: skuDataList,
       soldQuantuty: soldQuantity
-      }
+    }
 
     this.successfulSubmit(obj);
   }
@@ -282,12 +238,8 @@ export default class DataEntry extends Component {
     let success = true;
 
     axios.post("http://35.237.25:8081/dataEntry", obj)
-    .then((res) => {
-      console.log(res.data);
-    })
-    .catch(function(error){
-      if(!error.error);
-    });
+      .then((res) => {/* console.log(res.data); */})
+      .catch(function(error){ if(!error.error); });
 
     /*** Submit successfully enteried entries into the database ***/
     /*** Clear all the Entries ***/
@@ -317,27 +269,30 @@ export default class DataEntry extends Component {
 
   render() {
 
-    let newEntryList = [];
-    this.state.newEntry.forEach((element) => {
-      newEntryList.push(
-        <div className="row" key={element}>
-        <div className="col-sm-3 col-md-offset-1">
-             <input value={this.state.holdValueEntryList[element][0]} style={this.state.entryErr[element][0]} onChange={(event) => {this.handleEntryChange(event, element, 0)}} type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="storeNumber" placeholder="SKU Number" />
-        </div>
+    let newEntryList = this.state.newEntry.map((element, i) => {
+      return(
+        <div className="row" key={i}>
+          {/***  SKU Number Input  ***/}
+          <div className="col-sm-3 col-md-offset-1">
+              <input value={this.state.holdValueEntryList[element][0]} style={this.state.entryErr[element][0]} onChange={(event) => {this.handleEntryChange(event, element, 0)}} type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="storeNumber" placeholder="SKU Number" />
+          </div>
 
-        <div className="col-sm-3">
-             <input value={this.state.holdValueEntryList[element][1]} style={this.state.entryErr[element][1]}  type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="storeNumber" placeholder="SKU Description" />
-        </div>
+          {/***  SKU Decription  ***/}
+          <div className="col-sm-3">
+              <input value={this.state.holdValueEntryList[element][1]} style={this.state.entryErr[element][1]}  type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="storeNumber" placeholder="SKU Description" />
+          </div>
 
-        <div className="col-sm-3">
-             <input value={this.state.holdValueEntryList[element][2]} style={this.state.entryErr[element][2]} onChange={(event) => {this.handleEntryChange(event, element, 2)}} type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="storeNumber" placeholder="QTY Sold" />
-        </div>
+          {/***  Sales QTY Input  ***/}
+          <div className="col-sm-3">
+              <input value={this.state.holdValueEntryList[element][2]} style={this.state.entryErr[element][2]} onChange={(event) => {this.handleEntryChange(event, element, 2)}} type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="storeNumber" placeholder="QTY Sold" />
+          </div>
 
-        <div className="col-sm-2">
-             <button onClick={() => {this.onDeletePress(element)} } type="button" className="btn btn-default" aria-label="Left Align">
-               <span className="glyphicon glyphicon-trash trashSymbole" aria-hidden="true"></span>
-             </button>
-        </div>
+          {/***  Trash Can Delete Row  ***/}          
+          <div className="col-sm-2">
+              <button onClick={() => {this.onDeletePress(element)} } type="button" className="btn btn-default" aria-label="Left Align">
+                <span className="glyphicon glyphicon-trash trashSymbole" aria-hidden="true"></span>
+              </button>
+          </div>
        </div>
        )
     })
@@ -349,16 +304,12 @@ export default class DataEntry extends Component {
         <AlertUser 
           show={this.state.alert}
         />
-        {/* <div class="alert alert-success">
-          <strong>Success!</strong> Weekly Sales Report has been submitted!
-        </div> */}
 
         <h1 className="pageHeader"> Weekly Sales Report </h1>
         <br/>
 
    			<form className="form-inline">
-   			  <div className="row">
-             <TopOptions 
+          <TopOptions 
               storeNum={this.state.storeNum}
               strErr={this.state.strErr}
               factor={this.state.factor}
@@ -372,41 +323,35 @@ export default class DataEntry extends Component {
               onFactorChange={(event) => {this.handleFactorChange(event)}}
               onWeekChange={(event) => {this.handleWeekChange(event)}}
               onYearChange={(event) => {this.handleYearChange(event)}}
-             />
-  			 </div>
-			</form>
-      <br/>
-
-			<div className="newEntryList">
-        <br />
-         {newEntryList}
+          />
+			  </form>
         <br/>
-      </div>
 
-      <br />
-      <button onClick={this.addNewEntry}  type="button" id="addEntry" className="col-md-offset-5 btn btn-primary btn-lg btn-block buttonEntry">Add New Entry</button>
-      <br />
-      <br />
-      <br />
-
-      <Modal 
-        show={this.state.modalDisplay}
-        factor={this.state.factor}
-        strNum={this.state.storeNum}
-        week={this.state.week}
-        year={this.state.year}
-        holdValue={this.state.holdValueEntryList}
-        onClose={(event)=>{this.handleCloseModal(event)}}
-        onSubmit={(event)=>{this.handleSubmit(event)}}
-      />
-      {/* <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" display={this.state.modalDisplay} aria-labelledby="myLargeModalLabel">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            ...
-          </div>
+        {/***  SKU Entry List  ***/}
+			  <div className="newEntryList">
+          <br />
+           {newEntryList}
+          <br/>
         </div>
-      </div> */}
-      <button onClick={(e)=>{this.handleSubmit(e)}} type="button" id="addEntry" data-toggle="modal" target=".bs-example-modal.lg" className="btn btn-success btn-lg btn-block submitEntry">Submit</button>
+
+        <br />
+        <button onClick={this.addNewEntry}  type="button" id="addEntry" className="col-md-offset-5 btn btn-primary btn-lg btn-block buttonEntry">Add New Entry</button>
+        <br />
+        <br />
+        <br />
+
+        <Modal 
+          show={this.state.modalDisplay}
+          factor={this.state.factor}
+          strNum={this.state.storeNum}
+          week={this.state.week}
+          year={this.state.year}
+          holdValue={this.state.holdValueEntryList}
+          onClose={(event)=>{this.handleCloseModal(event)}}
+          onSubmit={(event)=>{this.handleSubmit(event)}}
+        />
+
+        <button onClick={(e)=>{this.handleSubmit(e)}} type="button" id="addEntry" data-toggle="modal" target=".bs-example-modal.lg" className="btn btn-success btn-lg btn-block submitEntry">Submit</button>
       </div>
     )
   }

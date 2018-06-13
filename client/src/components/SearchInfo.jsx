@@ -28,17 +28,17 @@ export default class SearchInfo extends Component {
 		return (
 			<div className="searchInfo">
 				<table className="table">
-					<thead className="thead-dark">
-						<tr>
-							<th scope="col">#</th>
-							<th scope="col">Week</th>
-							<th scope="col">Year</th>
-							<th scope="col">Factor</th>
-							<th scope="col">SKU</th>
-							<th scope="col">Description</th>
-							<th scope="col">Quantity</th>
-						</tr>
-					</thead>
+						<thead className="thead-dark">
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">Week</th>
+								<th scope="col">Year</th>
+								<th scope="col">Factor</th>
+								<th scope="col">SKU</th>
+								<th scope="col">Description</th>
+								<th scope="col">Quantity</th>
+							</tr>
+						</thead>
 					<tbody>
 						{this.loadPastInfo()}
 					</tbody>
