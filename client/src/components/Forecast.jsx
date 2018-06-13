@@ -268,11 +268,12 @@ export default class Forecast extends Component {
                         <button className="btn btn-primary" type="submit"> Submit </button>
                     </div>
                 </form>
-                <ForecastChart show={this.state.show} pastInfo={this.state.pastInfo} forecastInfo ={this.state.forecastInfo} multiplier = {this.state.factorMultiplier}/>
                 <h2>Forecast: </h2>
                 <SearchInfo searchInfo={this.state.forecastInfo} factorMultiplier={this.state.factorMultiplier} />
                 <h2>Past Sales: </h2>
                 <SearchInfo searchInfo={this.state.pastInfo} />
+                <ForecastChart show={this.state.show} pastInfo={this.state.pastInfo} forecastInfo ={this.state.forecastInfo} multiplier = {this.state.factorMultiplier}/>
+                
                 <br />
                 <br />
             </div>
