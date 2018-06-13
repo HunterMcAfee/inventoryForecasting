@@ -46,12 +46,8 @@ public class ForecastDao {
         }
 
         if(query.getWeekStart() != 0){ //both weeks were filled out or least the first week was filled
-            System.out.println("Both weeks");
             if(query.getYearStart() != 0){ //if both years exist
-                System.out.println("Both eyars");
                 if(query.getYearStart() == query.getYearEnd()){ //if the same year
-                    System.out.println("Same year");
-                    System.out.println(query.getYearStart());
                     sqlConditions += " AND (sh_week >= ? AND sh_week <= ?) AND sh_year = ?";
                     arguments.add(query.getWeekStart()); arguments.add(query.getWeekEnd()); arguments.add(query.getYearStart());
                 }
@@ -86,9 +82,7 @@ public class ForecastDao {
         }
 
         if(query.getWeekStart() == 0 && query.getWeekEnd() == 0){
-            System.out.println("1");
                 if(query.getYearStart() != 0){
-                    System.out.println("2");
                     sqlConditions += " AND sh_year >= ? AND sh_year <= ?";
                     arguments.add(query.getYearStart());
                     arguments.add(query.getYearEnd());

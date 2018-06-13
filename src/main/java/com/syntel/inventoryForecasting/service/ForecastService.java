@@ -20,17 +20,12 @@ public class ForecastService {
     }
 
     public List<QueryResult> getPastSales(SearchParam query) {
-        System.out.println(query.getYearStart());
-        System.out.println(query.getYearEnd());
-        System.out.println("////////////////////////////////////////\nGEt past sales\n////////////////////////////////////////////////");
         List<QueryResult> results = forecastDao.getPastSales(query);
         if(results.isEmpty()){ //if that years search did not work move back one more year
-            System.out.println("////////////////////////////////////////\nMove Back a year\n////////////////////////////////////////////////");
             query.setYearStart(query.getYearStart() - 1);
             query.setYearEnd(query.getYearEnd() - 1);
             results = forecastDao.getPastSales(query);
             if(results.isEmpty()){ //if the previous year had no info, range the weeks
-                System.out.println("////////////////////////////////////////\nExtend Weeks\n////////////////////////////////////////////////");
                     boolean avgCall = false;
 
                     int init_strweek = query.getWeekStart();
@@ -56,7 +51,6 @@ public class ForecastService {
 
                     results = forecastDao.getPastSales(query);
                     if(results.isEmpty()){
-                        System.out.println("////////////////////////////////////////\nLook into another store\n////////////////////////////////////////////////");
                         //reset time range back to original
                         query.setWeekStart(init_strweek);
                         query.setWeekEnd(init_endweek);
@@ -70,7 +64,6 @@ public class ForecastService {
                         results = forecastDao.getDifferentStoresales(query);
                     }
                     else if(avgCall){
-                        System.out.println("////////////////////////////////////////\nAveraging Range\n////////////////////////////////////////////////");
                         int avg = 0;
                         for(int i = 0; i < results.size(); i++){
                             avg += results.get(i).getQuantity();

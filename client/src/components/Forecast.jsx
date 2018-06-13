@@ -193,7 +193,7 @@ export default class Forecast extends Component {
 
     render() {
         return (
-            <div>
+            <div className="forecastPage">
                 <h1 className="pageHeader">Forecast</h1>
                 <br />
                 <form className="searchBox row" onSubmit={this.handleSubmit}>
@@ -273,7 +273,6 @@ export default class Forecast extends Component {
                 <h2>Past Sales: </h2>
                 <SearchInfo searchInfo={this.state.pastInfo} />
                 <ForecastChart show={this.state.show} pastInfo={this.state.pastInfo} forecastInfo ={this.state.forecastInfo} multiplier = {this.state.factorMultiplier}/>
-                
                 <br />
                 <br />
             </div>

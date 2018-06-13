@@ -30,14 +30,10 @@ class ForecastChart extends React.Component {
 
     chartData.push(['Week', 'PstQuantity', 'FtrQuantity' ]);
 
-    console.log(this.props.forecastInfo)
     this.props.forecastInfo.forEach((entry)=>{
         let multFtr = Math.floor(entry.quantity * (this.props.multiplier ? Math.abs(this.props.multiplier) : 1))
         
         for(let i = 0; i < this.props.pastInfo.length; i++){
-          console.log(this.props.pastInfo);
-          console.log(this.props.pastInfo[i]);
-          console.log(this.props.pastInfo[i].week);
           if(this.props.pastInfo[i].week === entry.week){
             chartData.push([entry.week, this.props.pastInfo[i].quantity, multFtr])
             break;
