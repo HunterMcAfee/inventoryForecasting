@@ -61,7 +61,7 @@ h2{
 .infoName {
 	background-color: #2B4141;
 	box-shadow: 2px 2px 3px grey;
-	color: white;
+	color: #EFF6EE;
 	display: inline-block;
 	padding-left: 10px;
 	padding-right: 10px;
@@ -74,12 +74,75 @@ h2{
 	background-color: #2B4141;
 	border-color: #2B4141;
 	color: white;
+	border: 1px;
 }
 
 .btn-submit:hover {
 	background-color: white;
 	border-color: #2B4141;
 	color: #2B4141;
+	border: 1px solid #2B4141;
+}
+
+.btn-add {
+	background-color: #7C9EB2;
+	border-color: #7C9EB2;
+	color: white;
+	border: 1px;
+}
+
+.btn-add:hover {
+	background-color: white;
+	border-color: #7C9EB2;
+	color: #7C9EB2;
+	border: 1px solid #7C9EB2;
+}
+
+
+body::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background-color: #222223;
+  outline: 1px solid #1F2833;
+}
+
+.newEntryList::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+.newEntryList::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+.newEntryList::-webkit-scrollbar-thumb {
+	background-color: #2B4141;
+	outline: 1px solid #1F2833;
+}
+
+.searchInfo::-webkit-scrollbar {
+    width: 1em;
+}
+ 
+.searchInfo::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+.searchInfo::-webkit-scrollbar-thumb {
+  background-color: #2B4141;
+  outline: 1px solid #1F2833;
+}
+
+.dataEntry {
+	background-color: white;
+	padding-bottom: 15px;
+	margin-bottom: 10px;
+	border-radius: 2px;
+	box-shadow: 2px 2px 3px grey;
 }
 
 .navbar {
@@ -97,7 +160,8 @@ h2{
 }
 
 .navbar-default .navbar-nav > li > a {
-    color: #EFF6EE;
+	color: #EFF6EE;
+	font-weight: bold;
 }
 
 .thead-dark{

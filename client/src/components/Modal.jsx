@@ -57,7 +57,7 @@ class Modal extends Component{
 
         const modalStyle = {
             position: 'relative',
-            backgroundColor: 'rgb(229,229,229)',
+            backgroundColor: 'white',
             borderRadius: 5,
             maxWidth: '80%',
             minHeight: '40%',
@@ -115,8 +115,8 @@ class Modal extends Component{
 
                 </div>
                 <div style={buttonStyle}>
-                        <button style={this.state.hoverSubmit} onMouseOut={()=>{this.hoverOffEvent(this, 'submit')}} onMouseOver={()=>{this.hoverEvent(this, 'submit')}} onClick={(event)=>{this.handleSubmit(event)}} > Submit </button>
-                        <button style={this.state.hoverCancel} onMouseOut={()=>{this.hoverOffEvent(this, 'cancel')}} onMouseOver={()=>{this.hoverEvent(this, 'cancel')}} onClick={(event)=>{this.handleCloseModal(event)}} > Cancel </button>
+                        <button className="btn btn-submit" onMouseOut={()=>{this.hoverOffEvent(this, 'submit')}} onMouseOver={()=>{this.hoverEvent(this, 'submit')}} onClick={(event)=>{this.handleSubmit(event)}} > Submit </button>
+                        <button className="btn btn-add" onMouseOut={()=>{this.hoverOffEvent(this, 'cancel')}} onMouseOver={()=>{this.hoverEvent(this, 'cancel')}} onClick={(event)=>{this.handleCloseModal(event)}} > Cancel </button>
                 </div>
             </div>
         )

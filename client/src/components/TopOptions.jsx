@@ -31,7 +31,7 @@ class TopOptions extends Component{
 	// Week Options
 	let weekOption = [];
     for(let i = 1; i <= 52; i++) {
-        weekOption.push(<option key={i}>week {i} </option>);
+        weekOption.push(<option key={i}>Week {i} </option>);
     }
 
 	return(
