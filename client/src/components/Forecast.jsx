@@ -153,7 +153,7 @@ export default class Forecast extends Component {
             searchParams,
             pastInfoResults: this.state.pastInfo
         }
-        axios.post('hhttp://35.237.25.64:8081/forecast', payload)
+        axios.post('http://35.237.25.64:8081/forecast', payload)
             .then((res) => {
                 this.setState({
                     forecastInfo: res.data
