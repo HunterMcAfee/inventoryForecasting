@@ -52,7 +52,7 @@ export default class Forecast extends Component {
 
     componentDidMount() {
         // make axios call to our backend for all str incase new factors have been added
-        axios.post('http://localhost:8080/factors')
+        axios.post('http://35.237.25.64:8081/factors')
             .then((res) => {
                 this.setState({
                     factors: res.data
@@ -104,7 +104,7 @@ export default class Forecast extends Component {
             yearEnd: yearEnd
         }
 
-        axios.post('http://localhost:8080/past', searchParams)
+        axios.post('http://35.237.25.64:8081/past', searchParams)
             .then((res) => {
                 this.setState({
                     pastInfo: res.data
@@ -115,7 +115,7 @@ export default class Forecast extends Component {
                 console.log(error);
             })
 
-        axios.post('http://localhost:8080/factorMultiplier', searchParams)
+        axios.post('http://35.237.25.64:8081/factorMultiplier', searchParams)
             .then((res) => {
                 if (res.data.length > 0) {
                     let multiplierData = res.data;
@@ -149,7 +149,7 @@ export default class Forecast extends Component {
             searchParams,
             pastInfoResults: this.state.pastInfo
         }
-        axios.post('http://localhost:8080/forecast', payload)
+        axios.post('hhttp://35.237.25.64:8081/forecast', payload)
             .then((res) => {
                 this.setState({
                     forecastInfo: res.data
