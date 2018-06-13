@@ -38,15 +38,15 @@ export default class DataEntry extends Component {
 
   componentDidMount(){
 
-    axios.post("http://localhost:8080/factorData")
+    axios.post("http://35.237.25.64:8081/factorData")
     .then((res) => {  this.setState({factorOption: res.data}); })
     .catch(function(error){ if(!error.error); });
 
-    axios.post("http://localhost:8080/skuMasterData")
+    axios.post("http://35.237.25.64:8081/skuMasterData")
     .then((res) => {  this.setState({skuData: res.data})  })
     .catch(function(error){ if(!error.error); });
 
-    axios.post("http://localhost:8080/strMasterData")
+    axios.post("http://35.237.25.64:8081/strMasterData")
     .then((res) => {  this.setState({strNumberData: res.data})  })
     .catch(function(error){ if(!error.error); });
   }
@@ -237,7 +237,7 @@ export default class DataEntry extends Component {
     console.log(obj);
     let success = true;
 
-    axios.post("http://localhost:8080/dataEntry", obj)
+    axios.post("http://35.237.25.64:8081/dataEntry", obj)
       .then((res) => {/* console.log(res.data); */})
       .catch(function(error){ if(!error.error); });
 
