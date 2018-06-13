@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import SearchInfo from './SearchInfo.jsx'
 import WeekdropdownStr from './WeekdropdownStr'
 import WeekdropdownEnd from './WeekdropdownEnd'
+import ForecastChart from './ForecastChart'
 import axios from 'axios';
 
 export default class Forecast extends Component {
@@ -9,6 +10,7 @@ export default class Forecast extends Component {
     constructor() {
         super();
         this.state = ({
+            show: false,
             factors: [],
             strType: "Store Type",
             factorTxt: "Factor",
@@ -141,7 +143,9 @@ export default class Forecast extends Component {
             .catch((error) => {
                 console.log(error);
             })
-
+            this.setState({
+                show: true
+            })
     }
 
     requestForecast = (searchParams) => {
@@ -264,6 +268,7 @@ export default class Forecast extends Component {
                         <button className="btn btn-primary" type="submit"> Submit </button>
                     </div>
                 </form>
+                <ForecastChart show={this.state.show} pastInfo={this.state.pastInfo} forecastInfo ={this.state.forecastInfo} multiplier = {this.state.factorMultiplier}/>
                 <h2>Forecast: </h2>
                 <SearchInfo searchInfo={this.state.forecastInfo} factorMultiplier={this.state.factorMultiplier} />
                 <h2>Past Sales: </h2>
