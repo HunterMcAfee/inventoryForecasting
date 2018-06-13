@@ -2,6 +2,8 @@
 !.mvn/wrapper/maven-wrapper.jar
 src/main/resources/application.properties
 src/main/resources/gcp-sql-key.json
+src/main/resources/data.sql
+src/main/resources/schema.sql
 ### STS ###
 .apt_generated
 .classpath
