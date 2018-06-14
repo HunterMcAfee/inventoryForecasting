@@ -32,7 +32,7 @@ public class ForecastDao {
         ArrayList<Object> arguments = new ArrayList<>();
 
         if (query.getType() != "") {
-            sqlFrom += ", strmaster";
+            sqlFrom += ", forecast_capstone.strmaster";
             sqlConditions += " AND sh_str_id = str_id AND str_type = ?";
             arguments.add(query.getType());
         }
