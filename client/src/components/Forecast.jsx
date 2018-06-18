@@ -16,38 +16,8 @@ export default class Forecast extends Component {
             factorTxt: "Factor",
             weekStr: "Week Start",
             weekEd: "Week End",
-            pastInfo: [{
-                week: 1,
-                year: 2018,
-                factor: "XXXXX",
-                sku_id: "XXXXXXXX",
-                description: "XXXXX",
-                quantity: 1,
-            },
-            {
-                week: 2,
-                year: 2018,
-                factor: "XXXXX",
-                sku_id: "XXXXXXXX",
-                description: "XXXXX",
-                quantity: 1,
-            }],
-            forecastInfo: [{
-                week: 1,
-                year: 2018,
-                factor: "XXXXX",
-                sku_id: "XXXXXXXX",
-                description: "XXXXX",
-                quantity: 1,
-            },
-            {
-                week: 2,
-                year: 2018,
-                factor: "XXXXX",
-                sku_id: "XXXXXXXX",
-                description: "XXXXX",
-                quantity: 1,
-            }]
+            pastInfo: [],
+            forecastInfo: []
         })
         this.changeFactorText = this.changeFactorText.bind(this);
     }
@@ -195,7 +165,7 @@ export default class Forecast extends Component {
         return (
             <div className="forecastPage">
                 <div className="headerSearch">
-                    <h1 className="pageHeader">Forecast</h1>
+                    <h1 className="pageHeader">Forecast Search</h1>
                     <div className="searchBox">
                         <form className="row" onSubmit={this.handleSubmit}>
                             <div className="col1 col-sm-12 col-lg-2 col-lg-offset-1">

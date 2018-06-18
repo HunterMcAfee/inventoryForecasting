@@ -39,8 +39,6 @@ h2{
 	/* border: solid 2px rgb(35,35,35); */
 	box-shadow: 2px 2px 5px grey;
 	border-radius: 2px;
-	margin-left: 2.5%;
-	margin-right: 2.5%;
 	overflow-y: scroll;
 	height: 35vh;
 	background-color: white;
@@ -67,7 +65,11 @@ h2{
 	padding-right: 10px;
 	padding-bottom: 5px;
 	padding-top: 5px;
-	border-radius: 2px;
+	margin-bottom: 0px;
+	width: 100%;
+	/* text-align: center; */
+	border-top-left-radius: 2px;
+	border-top-right-radius: 2px;
 }
 
 .btn-submit {
@@ -78,6 +80,13 @@ h2{
 }
 
 .btn-submit:hover {
+	background-color: white;
+	border-color: #2B4141;
+	color: #2B4141;
+	border: 1px solid #2B4141;
+}
+
+.btn-submit:focus {
 	background-color: white;
 	border-color: #2B4141;
 	color: #2B4141;
@@ -159,13 +168,33 @@ body::-webkit-scrollbar-thumb {
 	font-weight: bolder;
 }
 
+.navbar-default:hover .navbar-brand:hover {
+	color: grey;
+	font-weight: bolder;
+}
+
 .navbar-default .navbar-nav > li > a {
 	color: #EFF6EE;
 	font-weight: bold;
 }
 
+.navbar-default .navbar-nav > li > a:hover {
+	color: grey;
+	font-weight: bold;
+}
+
+.navbar-default .navbar-nav > li > a:active {
+	color: grey;
+	font-weight: bold;
+}
+
+.navbar-default .navbar-nav > li > a:focus {
+	color: grey;
+	font-weight: bold;
+}
+
 .thead-dark{
-	background-color: #C12424;
+	background-color: #7E846B;
 	color: rgb(229,229,229);
 }
 
@@ -195,7 +224,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .pageHeader {
-	background-color: #C12424;
+	background-color: #7E846B;
 	color: white;
 	border-top-left-radius: 2px;
 	border-top-right-radius: 2px;

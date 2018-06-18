@@ -14,11 +14,11 @@ export default class Navbar extends Component {
                                 <span className="icon-bar"></span>
                                 <span className="icon-bar"></span>
                             </button>
-                            <Link className="navbar-brand link" to="/"><i class="fa fa-wpforms"></i> Inventory Forecasting</Link>
+                            <Link className="navbar-brand link" to="/"><i className="fa fa-wpforms"></i> Inventory Forecasting</Link>
                         </div>
                         <div className="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul className="nav navbar-nav">
-                                <li className="link"><Link to="/">Weekly Sales Report<span className="sr-only">(current)</span></Link></li>
+                                <li className="link"><Link to="/">Weekly Sales Entry<span className="sr-only">(current)</span></Link></li>
                                 <li className="link"><Link to="/forecast">Forecast</Link></li>
                                 
                             </ul>
