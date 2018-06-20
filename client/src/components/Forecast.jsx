@@ -17,7 +17,8 @@ export default class Forecast extends Component {
             weekStr: "Week Start",
             weekEd: "Week End",
             pastInfo: [],
-            forecastInfo: []
+            forecastInfo: [],
+            disableEndYear: true,
         })
         this.changeFactorText = this.changeFactorText.bind(this);
     }
@@ -161,7 +162,24 @@ export default class Forecast extends Component {
         })
     }
 
+    enableEndYear = (event) => {
+
+       event.preventDefault();
+       
+       if(event.target.value === ""){
+            document.getElementById('yearEnd').value = "";
+            this.setState({
+                disableEndYear: "disabled"
+            })
+        }else{
+            this.setState({
+             disableEndYear: ""
+            })
+        }
+    }
+
     render() {
+        const disableYear = this.state.disableEndYear;
         return (
             <div className="forecastPage">
                 <div className="headerSearch">
@@ -218,7 +236,7 @@ export default class Forecast extends Component {
                                     </ul>
                                 </div>
                                 <br />
-                                <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearStart" />
+                                <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearStart" onChange={(event)=> {this.enableEndYear(event)}}/>
                             </div>
                             {/*Week End Date */}
                             <div className="col3 col-sm-12 col-lg-2">
@@ -232,7 +250,7 @@ export default class Forecast extends Component {
                                     </ul>
                                 </div>
                                 <br />
-                                <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" placeholder="Year" id="yearEnd" />
+                                <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" disabled={disableYear ? true : false} placeholder="Year" id="yearEnd"/>
                             </div>
                             <br />
                             <div className="col4 col-sm-12 col-lg-2 ">
